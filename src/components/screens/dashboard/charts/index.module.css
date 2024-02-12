@@ -1,0 +1,58 @@
+.charts{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+    position: relative;
+    /* overflow-y: scroll; */
+}
+
+.charts::-webkit-scrollbar{
+    display: none;
+}
+
+.body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 25px;
+    gap: 20px;
+    height: 100%;
+}
+
+
+/* .body:last-child{
+    width: 100%;
+} */
+
+.header{
+    height: 40px;
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chart{
+    width: calc(100% - 10px);
+}
+
+.row{
+
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    position: relative;
+}
+
+@media (max-width: 1200px) {
+    .row{
+        flex-direction: column;
+    }
+    
+}

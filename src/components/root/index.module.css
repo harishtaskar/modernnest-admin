@@ -1,0 +1,9 @@
+.root{
+    max-height: calc(100vh - 81px);
+    overflow-y: scroll;
+    
+}
+
+.root::-webkit-scrollbar{
+    display: none;
+}

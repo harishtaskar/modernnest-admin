@@ -1,0 +1,59 @@
+.screen{
+    padding: 30px;
+}
+
+.body{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-flow: wrap;
+    gap: 20px;
+}
+
+.cardBody{
+    margin: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.top{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profile{
+    width: 100px;
+    height: 100px;
+}
+
+.details{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: scroll;
+    max-height: 594px;
+}
+
+.details::-webkit-scrollbar{
+    display: none;
+}
+
+.companyDetails{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: scroll;
+    max-height: 710px;
+}
+.companyDetails::-webkit-scrollbar{
+    display: none;
+}

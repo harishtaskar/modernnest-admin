@@ -1,0 +1,122 @@
+.registerbody{
+    display: flex;
+    width: 520px;
+    max-height: 1024px;
+    padding: 40px 30px;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    flex-shrink: 0;
+    background-color: var(--white);
+}
+
+.subheading{
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 26px; 
+}
+
+.breadcrumb{
+    width: 100%;
+    min-height: 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 4px;
+}
+
+.circle{
+    width: 12px;
+    height: 12px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+}
+
+.line{
+    width: 40px;
+    height: 2px;
+    background-color: var(--primary-color);
+    animation: breadcrumb-line 500ms linear;
+}
+
+.lineNotCompleted{
+    width: 40px;
+    height: 2px;
+    background-color: var(--second-text-color);
+}
+
+.circleNotCompleted{
+    width: 12px;
+    height: 12px;
+    background-color: transparent;
+    border: 2px solid var(--second-text-color);
+    border-radius: 50%;
+}
+
+.circleActive{
+    width: 16px;
+    height: 16px;
+    background-color: transparent;
+    border: 2.5px solid var(--primary-color);
+    border-radius: 50%;
+    animation: breadcrumb-circle 500ms normal;
+}
+
+@keyframes breadcrumb-line {
+    from { width: 40px; background-color: var(--second-text-color);
+     }
+    to {width: 40px; background-color: var(--primary-color);}
+}
+@keyframes breadcrumb-circle {
+    from { width: 10px; height: 10px; border-color: var(--second-text-color);
+     }
+    to {width: 16px; height: 16px; border-color: var(--primary-color);
+    }
+}
+
+.form{
+    width: 100%;
+    display: flex;
+    height: 100%;
+    max-height: 350px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 6px;
+    overflow-y: scroll;
+}
+
+.innerForm{
+    width: 100%;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 6px;
+}
+
+.form::-webkit-scrollbar,
+.innerForm::-webkit-scrollbar
+ {
+    width: 2px; /* Set the width of the scrollbar */
+  }
+
+.horizontaldiv{
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.checked{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    color: var(--text-color);
+}

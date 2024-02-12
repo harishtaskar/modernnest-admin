@@ -1,0 +1,139 @@
+
+.main{
+    position: relative;
+    display: inline-block;
+}
+
+.button{
+    width: fit-content;
+    padding: 14px;
+    background: var(--white);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-start;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-color-2);
+    cursor: pointer;
+}
+
+.button.border{
+    box-sizing: border-box;
+    box-shadow: inset 0px 0px 0px 1px var(--primary-color);
+    /* border: 1px solid var(--primary-color); */
+}
+
+.filter{
+    width: fit-content;
+    padding: 12px;
+    background: var(--background);
+    border-radius: 8px;
+    position: absolute;
+    right: 0;
+    min-width: 240px;
+    z-index: 10;
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.12);
+}
+
+.reset{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+button{
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-color);
+    padding: 5px;
+    background-color: var(--background);
+    border: 0.5px solid var(--muted-border);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+span{
+    font-size: 14px;
+    color: var(--text-color);
+
+}
+
+.select{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    border: 1px solid var(--white);
+    color: var(--text-color-2);
+    cursor: pointer;
+    background-color: var(--white);
+    border-radius: 8px;
+}
+
+.select:hover{
+    border: 1px solid var(--text-color-2);
+}
+
+.selectBorder{
+    border: 1px solid var(--second-text-color);
+}
+
+ul{
+    margin: 0px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+li{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* li:hover{
+    background-color: var(--light-gray-1);
+} */
+
+.checkbox{
+    width: 20px;
+    height: 20px;
+    min-width: 12px;
+    margin: 0px;
+    padding: 0px;
+    cursor: pointer;
+    background-color: var(--white);
+}
+
+label{
+    width: 100%;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.badge{
+    width: 15px;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    position: absolute;
+    right: -4px;
+    top: -4px;
+    font-size: 11px;
+    color: var(--white-solid);
+    z-index: 2;
+    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.20);
+}
