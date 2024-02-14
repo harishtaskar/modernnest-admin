@@ -1,14 +1,23 @@
 import classes from "./index.module.css";
-import { useRecoilValue } from "recoil";
+import { useRecoilValueLoadable } from "recoil";
 //@ts-ignore
 import { currentUserState } from "../../state/atoms/screen.js";
+import SkeletonLoading from "../shared/SkeletonLoading.js";
 
 type Props = {};
 
 const Navbar = (props: Props) => {
-  const currentUser = useRecoilValue(currentUserState);
+  const currentUser = useRecoilValueLoadable(currentUserState);
 
-  if (currentUser) {
+  if (currentUser.state === "loading") {
+    return (
+      <div className="content">
+        <SkeletonLoading
+          style={{ width: "452px", height: "458px", borderRadius: "8px" }}
+        />
+      </div>
+    );
+  } else if (currentUser.state === "hasValue") {
     return (
       <header className={`${classes.header} ${"flex-row-center"}`}>
         <div className={`${classes.main}`}>

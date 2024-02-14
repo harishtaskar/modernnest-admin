@@ -16,7 +16,11 @@ type RegisterData = {
     registration: string;
     contact: string;
     email: string;
-    document: string;
+    document: {
+      name: string;
+      path: string;
+      type: string;
+    };
   };
   store: {
     name: string;
@@ -38,7 +42,11 @@ type RegisterData = {
     city: string;
     pin: number;
   };
-  idverification: string;
+  idverification: {
+    name: string;
+    path: string;
+    type: string;
+  };
   email: string;
   password: string;
   confirmpassword: string;

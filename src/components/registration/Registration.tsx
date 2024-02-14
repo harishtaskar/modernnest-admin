@@ -11,7 +11,7 @@ import style from "../login/index.module.css";
 import share from "../HOC/index.module.css";
 import Modal from "../render-model/Modal";
 import PersonalDataForm from "./PersonalDataForm";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from "recoil";
 import AddressForm from "./AddressForm";
 import UserDetailsForm from "./UserDetailsForm";
 import Breadcrumb from "./BreadCrumb";
@@ -25,10 +25,13 @@ import { registrationDataState } from "./state/index.js";
 import { activeModal } from "../../state/atoms/screen.js";
 import BussinessDetails from "./BussinessDetails.js";
 import StoreDetails from "./StoreDetails.js";
-import useUsers from "../../hooks/Users/useUsers.js";
 import { useNavigate } from "react-router-dom";
 //@ts-ignore
 import { currentUserState } from "./../../state/atoms/screen.js";
+import useAPI from "../../hooks/Other/useAPI.js";
+import { PORT } from "../../../config.js";
+import ExpiredToken from "../screens/not-found/ExpiredToken.js";
+import SkeletonLoading from "../shared/SkeletonLoading.js";
 
 type Props = {
   onClose: MouseEventHandler<HTMLButtonElement>;
@@ -42,8 +45,8 @@ type Register = {
 
 const Registration = ({ onClose }: Props) => {
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
-  const currentUser = useRecoilValue(currentUserState);
-  const { onSellerRegister } = useUsers();
+  const currentUser = useRecoilValueLoadable(currentUserState);
+  const { postRequest } = useAPI();
   const registerData: RegisterData = useRecoilValue(registrationDataState);
   const [activeForm, setActiveForm] = useRecoilState<Register | any>(
     activeRegistrationForm
@@ -52,10 +55,15 @@ const Registration = ({ onClose }: Props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (currentUser) {
-      navigate("/");
+    if (
+      localStorage.getItem("authorization")?.length &&
+      currentUser.state === "hasValue"
+    ) {
+      navigate("/?theme=light");
+    } else {
+      navigate("/signup");
     }
-  }, []);
+  }, [currentUser]);
 
   // rendering appropreate form of registering data
   const renderForms = useMemo(() => {
@@ -96,11 +104,11 @@ const Registration = ({ onClose }: Props) => {
       }
     } else if (activeForm.name === "businessdetails") {
       if (
-        registerData.business.name &&
-        registerData.business.registration &&
-        registerData.business.taxid &&
-        registerData.business.contact &&
-        registerData.business.email
+        registerData?.business?.name &&
+        registerData?.business?.registration &&
+        registerData?.business?.taxid &&
+        registerData?.business?.contact &&
+        registerData?.business?.email
       ) {
         setActiveForm({
           ...activeForm,
@@ -112,11 +120,11 @@ const Registration = ({ onClose }: Props) => {
       }
     } else if (activeForm.name === "storedetails") {
       if (
-        registerData.store.name &&
-        registerData.store.description &&
-        registerData.store.shiping &&
-        registerData.store.logo &&
-        registerData.store.estimatedeliverytime
+        registerData?.store?.name &&
+        registerData?.store?.description &&
+        registerData?.store?.shiping &&
+        registerData?.store?.logo &&
+        registerData?.store?.estimatedeliverytime
       ) {
         setActiveForm({ ...activeForm, storedetails: true, name: "address" });
       } else {
@@ -125,12 +133,12 @@ const Registration = ({ onClose }: Props) => {
     } // Checking if submitted form is second address details form
     else if (activeForm.name === "address") {
       if (
-        registerData.address.personaladdress &&
-        registerData.address.streetaddress &&
-        registerData.address.pin?.toString()?.length >= 6 &&
-        registerData.address.country &&
-        registerData.address.state &&
-        registerData.address.city
+        registerData?.address?.personaladdress &&
+        registerData?.address?.streetaddress &&
+        registerData?.address?.pin?.toString()?.length >= 6 &&
+        registerData?.address?.country &&
+        registerData?.address?.state &&
+        registerData?.address?.city
       ) {
         setActiveForm({ ...activeForm, address: true, name: "userdetails" });
       } else {
@@ -146,18 +154,26 @@ const Registration = ({ onClose }: Props) => {
         if (registerData?.password !== registerData.confirmpassword) {
           toast.error("Password Not Matched");
         } else {
-          // setButtonLoading(true);
-
-          const res = await onSellerRegister(registerData);
-          console.log(res);
-
-          // setButtonLoading(false);
+          const apiResponse = await postRequest(`${PORT}/seller/signup`, {
+            user: registerData,
+          });
+          console.log(apiResponse);
+          if (apiResponse?.res === "ok") {
+            toast.success("🚀 Registration Successfull");
+            navigate("/signin");
+          } else {
+            toast.error(apiResponse?.msg);
+            setActiveForm({
+              ...activeForm,
+              name: "businessdetails",
+            });
+          }
         }
       } else {
         toast.error("Please fill up all fields");
       }
     }
-  }, [activeForm, registerData, buttonLoading]);
+  }, [activeForm, registerData, buttonLoading, postRequest, useAPI]);
 
   // Rendering Registration modal body
   const renderRegisterBody = useMemo(() => {
@@ -183,14 +199,27 @@ const Registration = ({ onClose }: Props) => {
       </div>
     );
   }, [activeForm, registerData]);
-  return (
-    <Modal
-      onClose={onClose}
-      body={renderRegisterBody}
-      closeBtn={false}
-      backgroundstyle={{ backgroundColor: "transparent" }}
-    />
-  );
+
+  if (currentUser.state === "loading") {
+    return (
+      <div className="background">
+        <SkeletonLoading
+          style={{ width: "580px", height: "578px", borderRadius: "8px" }}
+        />
+      </div>
+    );
+  } else if (currentUser.state === "hasError") {
+    return <ExpiredToken />;
+  } else if (currentUser.state === "hasValue") {
+    return (
+      <Modal
+        onClose={onClose}
+        body={renderRegisterBody}
+        closeBtn={false}
+        backgroundstyle={{ backgroundColor: "transparent" }}
+      />
+    );
+  }
 };
 
 export default Registration;

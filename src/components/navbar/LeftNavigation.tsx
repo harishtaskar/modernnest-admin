@@ -1,4 +1,4 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValueLoadable } from "recoil";
 import classes from "./index.module.css";
 // @ts-ignore
 import { activeScreen } from "./../../state/atoms/screen.js";
@@ -6,12 +6,15 @@ import { activeScreen } from "./../../state/atoms/screen.js";
 import { currentUserState } from "../../state/atoms/screen.js";
 import { useEffect, useMemo, useState } from "react";
 import Toggle from "../shared/Toggle.js";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import ExpiredToken from "../screens/not-found/ExpiredToken.js";
+import SkeletonLoading from "../shared/SkeletonLoading.js";
 
 const LeftNavigation = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [searchParam, setSearchParam] = useSearchParams();
-  const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
+  const currentUser = useRecoilValueLoadable(currentUserState);
+  const navigate = useNavigate();
 
   const [activeScreenState, setActiveScreenState] =
     useRecoilState(activeScreen);
@@ -58,7 +61,11 @@ const LeftNavigation = () => {
               className={classes.menu}
               onClick={() => setCollapsed((prev) => !prev)}
             >
-              <i className="ri-menu-line ri-xl"></i>
+              <i
+                className={`${
+                  collapsed ? "ri-menu-unfold-line" : "ri-menu-fold-line"
+                } ri-2x`}
+              ></i>
             </button>
             {!collapsed && (
               <span className={`${classes.brand} ${classes.light}`}>
@@ -150,7 +157,8 @@ const LeftNavigation = () => {
             <li
               className={`${classes.li} ${activeScreenState}`}
               onClick={() => {
-                /* Logout Logic */
+                localStorage.setItem("authorization", "");
+                navigate("/signin");
               }}
               style={{ marginBottom: "10px", width: "100%" }}
             >
@@ -166,10 +174,18 @@ const LeftNavigation = () => {
     );
   }, [activeScreenState, collapsed, searchParam.get("theme")]);
 
-  if (currentUser) {
+  if (currentUser.state === "loading") {
+    return (
+      <div>
+        <SkeletonLoading
+          style={{ width: "240px", height: "100vh", borderRadius: "8px" }}
+        />
+      </div>
+    );
+  } else if (currentUser.state === "hasError") {
+    return <ExpiredToken />;
+  } else if (currentUser.state === "hasValue") {
     return renderNavBar;
-  } else {
-    return;
   }
 };
 

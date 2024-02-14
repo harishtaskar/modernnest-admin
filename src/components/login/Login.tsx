@@ -15,7 +15,12 @@ import { activeModal } from "./../../state/atoms/screen";
 import { currentUserState } from "../../state/atoms/screen.js";
 import Modal from "../render-model/Modal";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilValueLoadable } from "recoil";
+import useAPI from "../../hooks/Other/useAPI.js";
+import { PORT } from "../../../config.js";
+import { toast } from "react-toastify";
+import ExpiredToken from "../screens/not-found/ExpiredToken.js";
+import SkeletonLoading from "../shared/SkeletonLoading.js";
 
 type Props = {
   onClose: MouseEventHandler<HTMLButtonElement>;
@@ -28,17 +33,23 @@ type LoginData = {
 
 const Login = ({ onClose }: Props) => {
   const navigate = useNavigate();
-  const currentUser = useRecoilValue(currentUserState);
+  const currentUser = useRecoilValueLoadable(currentUserState);
+  const { getRequest } = useAPI();
   const [userDetails, setuserDetails] = useState<LoginData>({
     email: "",
     password: "",
   });
 
   useEffect(() => {
-    if (currentUser) {
-      navigate("/");
+    if (
+      localStorage.getItem("authorization")?.length &&
+      currentUser.state === "hasValue"
+    ) {
+      navigate("/?theme=light");
+    } else {
+      navigate("/signin");
     }
-  }, []);
+  }, [currentUser]);
 
   const onChangeHandler = useCallback(
     (key: string, value: string) => {
@@ -52,9 +63,17 @@ const Login = ({ onClose }: Props) => {
   const onLoginHandler = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
-      console.log(userDetails);
+      const response = await getRequest(`${PORT}/seller/signin`, userDetails);
+      console.log(response);
+      if (response.res === "ok") {
+        localStorage.setItem("authorization", response.token);
+        toast.success(response.msg);
+        navigate("/?theme=light");
+      } else {
+        toast.error(response.msg);
+      }
     },
-    [userDetails]
+    [userDetails, localStorage]
   );
 
   const loginform = useMemo(() => {
@@ -73,9 +92,7 @@ const Login = ({ onClose }: Props) => {
           inputType="password"
           label="Password"
           placeHolder=""
-          warning="invalid password"
           password={true}
-          minLength={8}
           onChange={onChangeHandler}
         />
         <div style={{ width: "100%", marginTop: "10px" }}>
@@ -83,7 +100,7 @@ const Login = ({ onClose }: Props) => {
         </div>
       </form>
     );
-  }, [userDetails]);
+  }, [userDetails, currentUser]);
 
   const renderLoginBody = useMemo(() => {
     return (
@@ -104,16 +121,28 @@ const Login = ({ onClose }: Props) => {
         </div>
       </div>
     );
-  }, [userDetails]);
+  }, [userDetails, currentUser]);
 
-  return (
-    <Modal
-      onClose={onClose}
-      body={renderLoginBody}
-      closeBtn={false}
-      backgroundstyle={{ backgroundColor: "transparent" }}
-    />
-  );
+  if (currentUser.state === "loading") {
+    return (
+      <div className="background">
+        <SkeletonLoading
+          style={{ width: "452px", height: "458px", borderRadius: "8px" }}
+        />
+      </div>
+    );
+  } else if (currentUser.state === "hasError") {
+    return <ExpiredToken />;
+  } else if (currentUser.state === "hasValue") {
+    return (
+      <Modal
+        onClose={onClose}
+        body={renderLoginBody}
+        closeBtn={false}
+        backgroundstyle={{ backgroundColor: "transparent" }}
+      />
+    );
+  }
 };
 
 export default Login;

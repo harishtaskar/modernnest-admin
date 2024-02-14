@@ -1,7 +1,7 @@
 import classes from "./index.module.css";
 import InputText from "../HOC/InputText";
 import { useCallback } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 // @ts-ignore
 import { registrationDataState } from "./state/index.js";
 
@@ -10,7 +10,9 @@ type Props = {
 };
 
 const PersonalDataForm = ({ title }: Props) => {
-  const setRegData = useSetRecoilState(registrationDataState);
+  const [regData, setRegData] = useRecoilState<RegisterData>(
+    registrationDataState
+  );
 
   const inputChangeHandler = useCallback((key: string, value: any) => {
     setRegData((prev: RegisterData) => {
@@ -29,6 +31,7 @@ const PersonalDataForm = ({ title }: Props) => {
           placeHolder=""
           warning="first name is required"
           onChange={inputChangeHandler}
+          value={regData?.personal?.firstname}
         />
         <InputText
           id="lastname"
@@ -37,6 +40,7 @@ const PersonalDataForm = ({ title }: Props) => {
           placeHolder=""
           warning="last name is required"
           onChange={inputChangeHandler}
+          value={regData?.personal?.lastname}
         />
       </div>
       <InputText
@@ -48,6 +52,7 @@ const PersonalDataForm = ({ title }: Props) => {
         minLength={10}
         maxLength={10}
         onChange={inputChangeHandler}
+        value={regData?.personal?.mobile}
       />
       <InputText
         id="email"
@@ -56,6 +61,7 @@ const PersonalDataForm = ({ title }: Props) => {
         placeHolder=""
         warning="Email is required"
         onChange={inputChangeHandler}
+        value={regData?.personal?.email}
       />
     </form>
   );

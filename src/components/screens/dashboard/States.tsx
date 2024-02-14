@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import Card from "../../HOC/Card";
 import classes from "./index.module.css";
 
@@ -18,7 +18,7 @@ const States = ({ data }: Props) => {
         {data?.map((item: Data, index: number) => {
           return (
             <>
-              <div className={classes.module}>
+              <div className={classes.module} key={index}>
                 <span className="text1">{item.title}</span>
                 <p className="text2">{item.subtitle}</p>
               </div>

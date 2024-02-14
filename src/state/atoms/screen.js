@@ -1,8 +1,10 @@
-import { atom } from "recoil";
+import axios from "axios";
+import { atom, selector } from "recoil";
+import { PORT } from "./../../../config";
 
 export const activeScreen = atom({
   key: "active-screen",
-  default: "profile",
+  default: "dashboard",
 });
 
 export const activeModal = atom({
@@ -12,5 +14,16 @@ export const activeModal = atom({
 
 export const currentUserState = atom({
   key: "current-user",
-  default: "123",
+  default: selector({
+    key: "current-user-selector",
+    get: async () => {
+      const token = localStorage.getItem("authorization");
+      const response = await axios.get(`${PORT}/seller/`, {
+        headers: { Authorization: token },
+      });
+      const user = await response.data.user;
+      return await new Promise((r) => setTimeout(() => r(user), 5000));
+      return user;
+    },
+  }),
 });

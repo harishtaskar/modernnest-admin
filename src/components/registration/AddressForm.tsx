@@ -3,13 +3,14 @@ import classes from "./index.module.css";
 import style from "../HOC/index.module.css";
 import InputText from "../HOC/InputText";
 import { Country, State, City } from "country-state-city";
-import { useSetRecoilState } from "recoil";
-import useUsers from "../../hooks/Users/useUsers";
+import { useRecoilState } from "recoil";
 //@ts-ignore
 import { registrationDataState } from "./state/index.js";
 
 const AddressForm = ({ title }: { title?: string }) => {
-  const setRegData = useSetRecoilState(registrationDataState);
+  const [regData, setRegData] = useRecoilState<RegisterData>(
+    registrationDataState
+  );
   const [selCountry, setSelCountry] = useState("");
   const [selState, setSelState] = useState("");
   const [selCity, setSelCity] = useState("");
@@ -93,6 +94,7 @@ const AddressForm = ({ title }: { title?: string }) => {
         placeHolder=""
         warning="Personal Address is required"
         onChange={inputChangeHandler}
+        value={regData?.address?.personaladdress}
       />
       <InputText
         id="streetaddress"
@@ -101,6 +103,7 @@ const AddressForm = ({ title }: { title?: string }) => {
         placeHolder=""
         warning="street Address is required"
         onChange={inputChangeHandler}
+        value={regData?.address?.streetaddress}
       />
       <div className={classes.horizontaldiv}>
         <div className={style.select}>
@@ -113,6 +116,7 @@ const AddressForm = ({ title }: { title?: string }) => {
             className={`${style.dropdown} ${style.input}`}
             onChange={countrySelectHandler}
             style={{ width: "95%" }}
+            value={regData?.address?.country}
           >
             {renderCountries}
           </select>
@@ -125,6 +129,7 @@ const AddressForm = ({ title }: { title?: string }) => {
             id="state"
             className={`${style.dropdown} ${style.input}`}
             onChange={stateSelectHandler}
+            value={regData?.address?.state}
           >
             {renderStates}
           </select>
@@ -140,6 +145,7 @@ const AddressForm = ({ title }: { title?: string }) => {
             className={`${style.dropdown} ${style.input}`}
             onChange={citySelectHandler}
             style={{ width: "95%" }}
+            value={regData?.address?.city}
           >
             {renderCities}
           </select>
@@ -152,6 +158,7 @@ const AddressForm = ({ title }: { title?: string }) => {
           warning="Pin code is too small"
           minLength={6}
           onChange={inputChangeHandler}
+          value={regData?.address?.pin}
         />
       </div>
     </form>

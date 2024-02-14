@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { CSSProperties, useCallback, useMemo, useState } from "react";
 import classes from "./index.module.css";
 import { LoadingIcon } from "../shared/loadingIcon";
 
@@ -16,7 +16,7 @@ type Props = {
   onChange: Function;
   value?: any;
   filename?: any;
-  style?: Object;
+  style?: CSSProperties;
   fileloading?: boolean;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
 };

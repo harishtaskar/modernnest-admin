@@ -1,0 +1,21 @@
+
+.notfound{
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.notfounddiv{
+    background-color: white;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 700px;
+    gap: 12px;
+    margin: 75px 20px;
+}

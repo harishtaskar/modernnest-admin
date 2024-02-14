@@ -1,6 +1,6 @@
 import classes from "./index.module.css";
 import InputText from "../HOC/InputText";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 // @ts-ignore
 import { registrationDataState } from "./state/index.js";
 import { useCallback } from "react";
@@ -10,7 +10,8 @@ type Props = {
 };
 
 const BussinessDetails = ({ title }: Props) => {
-  const setRegistrationState = useSetRecoilState(registrationDataState);
+  const [registrationState, setRegistrationState] =
+    useRecoilState<RegisterData>(registrationDataState);
 
   const registrationStateHandler = useCallback((key: string, value: any) => {
     setRegistrationState((prev: any) => {
@@ -28,6 +29,7 @@ const BussinessDetails = ({ title }: Props) => {
         placeHolder=""
         warning="business name is required"
         onChange={registrationStateHandler}
+        value={registrationState?.business?.name}
       />
       <InputText
         id="registration"
@@ -36,6 +38,7 @@ const BussinessDetails = ({ title }: Props) => {
         placeHolder=""
         warning="Registration Number is Required"
         onChange={registrationStateHandler}
+        value={registrationState?.business?.registration}
       />
       <InputText
         id="taxid"
@@ -45,6 +48,7 @@ const BussinessDetails = ({ title }: Props) => {
         require={false}
         onChange={registrationStateHandler}
         style={{ textTransform: "uppercase" }}
+        value={registrationState?.business?.taxid}
       />
       <InputText
         id="contact"
@@ -55,6 +59,7 @@ const BussinessDetails = ({ title }: Props) => {
         maxLength={10}
         warning="Contact should be exact 10 digits long"
         onChange={registrationStateHandler}
+        value={registrationState?.business?.contact}
       />
       <InputText
         id="email"
@@ -63,6 +68,7 @@ const BussinessDetails = ({ title }: Props) => {
         placeHolder=""
         warning="Bussiness Email is required"
         onChange={registrationStateHandler}
+        value={registrationState?.business?.email}
       />
     </form>
   );

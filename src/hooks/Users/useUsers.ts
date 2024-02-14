@@ -17,6 +17,7 @@ import {
 import { storage } from "../../firebase.js";
 // @ts-ignore
 import { v4 } from "uuid";
+import { PORT } from "./../../../config";
 
 const useUsers = () => {
   const setRegisterData = useSetRecoilState(registrationDataState);
@@ -81,24 +82,20 @@ const useUsers = () => {
     }
   }, []);
 
-  const onSellerRegister = useCallback(async (user: Object) => {
-    const res = await fetch("http://localhost:3000/api/sellers/new", {
-      method: "POST",
-      mode: "no-cors",
-      body: JSON.stringify({ seller: user }),
-    });
-    const data = await res.json();
-
-    if (res.status === 200) {
-      if (data.messege === "ok") {
-        return data.messege;
-      } else {
-        return data.messege;
-      }
-    } else {
-      return data.messege;
-    }
-  }, []);
+  // const onSellerRegister = useCallback(async (user: Object) => {
+  //   const res = await fetch(`${PORT}/seller/signup`, {
+  //     method: "POST",
+  //     mode: "no-cors",
+  //     headers: {
+  //       "Content-Type": "Application/json",
+  //     },
+  //     body: JSON.stringify({ user: user }),
+  //   });
+  //   const data = await res.json();
+  //   return new Promise((resolve) => {
+  //     resolve(data);
+  //   });
+  // }, []);
 
   const isUserAuthorized = () => {
     let authorized = false;
@@ -188,7 +185,7 @@ const useUsers = () => {
     onSetRegisterState,
     onSetCurrentUser,
     onUserLogin,
-    onSellerRegister,
+    // onSellerRegister,
     isUserAuthorized,
     onUserLogout,
     uploadImageFirebase,

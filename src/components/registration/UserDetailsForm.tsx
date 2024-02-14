@@ -2,7 +2,7 @@ import classes from "./index.module.css";
 import InputText from "../HOC/InputText";
 import useUsers from "../../hooks/Users/useUsers";
 import { useCallback, useState } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 // @ts-ignore
 import { storage } from "./../../firebase";
 // @ts-ignore
@@ -14,7 +14,9 @@ import useImages from "../../hooks/Other/useImages.js";
 type Props = {};
 
 const UserDetailsForm = (props: Props) => {
-  const setRegState = useSetRecoilState(registrationDataState);
+  const [regState, setRegState] = useRecoilState<RegisterData>(
+    registrationDataState
+  );
   const { onSetRegisterState, uploadImageFirebase } = useUsers();
   const [loading1, setLoading1] = useState(false);
   const [loading2, setLoading2] = useState(false);
@@ -36,7 +38,7 @@ const UserDetailsForm = (props: Props) => {
       );
       if (imageUrl !== ("" || undefined)) {
         setIdname(image.name.substring(0, 18));
-        setRegState((prev: RegisterData) => {
+        setRegState((prev: any) => {
           return {
             ...prev,
             idverification: {
@@ -66,7 +68,7 @@ const UserDetailsForm = (props: Props) => {
       );
       if (imageUrl !== ("" || undefined)) {
         setDocname(image.name.substring(0, 18));
-        setRegState((prev: RegisterData) => {
+        setRegState((prev: any) => {
           return {
             ...prev,
             business: {
@@ -97,7 +99,7 @@ const UserDetailsForm = (props: Props) => {
                 {idname}
               </i>
             ) : (
-              "Choose file"
+              regState?.idverification?.name.substring(0, 18) || "Choose file"
             )
           }
           placeHolder=""
@@ -115,6 +117,7 @@ const UserDetailsForm = (props: Props) => {
                 {docname}
               </i>
             ) : (
+              regState?.business?.document?.name.substring(0, 18) ||
               "Choose file"
             )
           }
@@ -132,6 +135,7 @@ const UserDetailsForm = (props: Props) => {
         password={true}
         minLength={8}
         onChange={onSetRegisterState}
+        value={regState?.password}
       />
       <InputText
         id="confirmpassword"
@@ -141,6 +145,7 @@ const UserDetailsForm = (props: Props) => {
         warning="Password not matched"
         password={true}
         onChange={onSetRegisterState}
+        value={regState?.confirmpassword}
       />
     </form>
   );

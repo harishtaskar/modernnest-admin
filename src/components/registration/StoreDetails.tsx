@@ -3,16 +3,15 @@ import style from "../HOC/index.module.css";
 import InputText from "../HOC/InputText";
 import useUsers from "../../hooks/Users/useUsers";
 import { ChangeEventHandler, useCallback, useMemo, useState } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 // @ts-ignore
 import { registrationDataState } from "./state/index.js";
 // @ts-ignore
 import { storage } from "./../../firebase";
 // @ts-ignore
 import { v4 } from "uuid";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+
 import useImages from "../../hooks/Other/useImages.js";
-import { LoadingIcon } from "../shared/loadingIcon.js";
 
 type Props = {
   title?: string;
@@ -21,8 +20,10 @@ type Props = {
 const ShippingMethods = ["By Road", "By Train", "By Air", "By Ships"];
 
 const StoreDetails = ({ title }: Props) => {
-  const setRegState = useSetRecoilState(registrationDataState);
-  const { onSetRegisterState, uploadImageFirebase } = useUsers();
+  const [regState, setRegState] = useRecoilState<RegisterData>(
+    registrationDataState
+  );
+  const { uploadImageFirebase } = useUsers();
   const [logoName, setLogoName] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -92,6 +93,7 @@ const StoreDetails = ({ title }: Props) => {
         placeHolder=""
         warning="store name is required"
         onChange={inputChangeHandler}
+        value={regState?.store?.name}
       />
       <InputText
         id="description"
@@ -100,6 +102,7 @@ const StoreDetails = ({ title }: Props) => {
         placeHolder=""
         warning="Description is Required"
         onChange={inputChangeHandler}
+        value={regState?.store?.description}
       />
       <div className={classes.horizontaldiv}>
         <InputText
@@ -113,7 +116,7 @@ const StoreDetails = ({ title }: Props) => {
                 {logoName}
               </i>
             ) : (
-              "Choose file"
+              regState?.store?.logo?.name.substring(0, 18) || "Choose file"
             )
           }
           placeHolder=""
@@ -142,6 +145,7 @@ const StoreDetails = ({ title }: Props) => {
           placeHolder="IN DAYS"
           warning="This feild is require"
           onChange={inputChangeHandler}
+          value={regState?.store?.estimatedeliverytime}
         />
         <InputText
           id="shipingrates"
@@ -150,6 +154,7 @@ const StoreDetails = ({ title }: Props) => {
           placeHolder="IN RUPEES (OPTIONAL)"
           require={false}
           onChange={inputChangeHandler}
+          value={regState?.store?.shipingrates}
         />
       </div>
     </form>
