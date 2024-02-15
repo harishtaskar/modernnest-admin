@@ -13,6 +13,8 @@ import { useRecoilValue } from "recoil";
 // @ts-ignore
 import { productDetailState } from "../state/index.js";
 import { toast } from "react-toastify";
+import useAPI from "../../../../hooks/Other/useAPI.js";
+import { PORT } from "../../../../../config.js";
 
 type Props = {
   onClose: MouseEventHandler<HTMLButtonElement>;
@@ -21,6 +23,8 @@ type Props = {
 const AddProduct = ({ onClose }: Props) => {
   const [disable, setDisable] = useState(true);
   const productDetails: Product = useRecoilValue(productDetailState);
+
+  const { postRequest } = useAPI();
 
   const isFilled = () => {
     let filled = false;
@@ -61,12 +65,15 @@ const AddProduct = ({ onClose }: Props) => {
     }
   }, [productDetails]);
 
-  const submitHandler = useCallback(() => {
-    if (isFilled()) {
-      ("Add Product To Database");
-      toast.success(" 🚀 Product added successfully");
+  const submitHandler = useCallback(async () => {
+    ("Add Product To Database");
+    const response = await postRequest(`${PORT}/product/add`, {
+      product: productDetails,
+    });
+    if (response.res === "ok") {
+      toast.success(response.msg);
     } else {
-      toast.error("Please fill all fields");
+      toast.error(response.msg);
     }
   }, []);
 

@@ -9,10 +9,11 @@ import LeftNavigation from "../navbar/LeftNavigation.js";
 import Navbar from "../navbar/Navbar.js";
 import ExpiredToken from "../screens/not-found/ExpiredToken.js";
 import SkeletonLoading from "../shared/SkeletonLoading.js";
+import ServerDown from "../screens/not-found/ServerDown.js";
 
 type Props = {};
 
-const Root = (props: Props) => {
+const Root = ({}: Props) => {
   const currentUser = useRecoilValueLoadable(currentUserState);
   const navigate = useNavigate();
 
@@ -41,7 +42,11 @@ const Root = (props: Props) => {
           />
         </div>
       );
-    } else if (currentUser.state === "hasValue") {
+    } else if (
+      currentUser.state === "hasValue" &&
+      currentUser.contents !== undefined
+    ) {
+      console.log(currentUser);
       return (
         <>
           <LeftNavigation />
@@ -53,7 +58,12 @@ const Root = (props: Props) => {
           </div>
         </>
       );
-    } else if (currentUser.state === "hasError") {
+    } else if (
+      currentUser.state === "hasError" &&
+      currentUser.contents.code === "ERR_NETWORK"
+    ) {
+      return <ServerDown />;
+    } else {
       return <ExpiredToken />;
     }
   }, [currentUser]);

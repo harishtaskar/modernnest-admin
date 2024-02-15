@@ -32,6 +32,7 @@ import useAPI from "../../hooks/Other/useAPI.js";
 import { PORT } from "../../../config.js";
 import ExpiredToken from "../screens/not-found/ExpiredToken.js";
 import SkeletonLoading from "../shared/SkeletonLoading.js";
+import ServerDown from "../screens/not-found/ServerDown.js";
 
 type Props = {
   onClose: MouseEventHandler<HTMLButtonElement>;
@@ -209,7 +210,11 @@ const Registration = ({ onClose }: Props) => {
       </div>
     );
   } else if (currentUser.state === "hasError") {
-    return <ExpiredToken />;
+    if (currentUser.contents.code === "ERR_NETWORK") {
+      return <ServerDown />;
+    } else {
+      return <ExpiredToken />;
+    }
   } else if (currentUser.state === "hasValue") {
     return (
       <Modal

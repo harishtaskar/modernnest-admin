@@ -21,8 +21,9 @@ export const currentUserState = atom({
       const response = await axios.get(`${PORT}/seller/`, {
         headers: { Authorization: token },
       });
+      console.log(response);
       const user = await response.data.user;
-      return await new Promise((r) => setTimeout(() => r(user), 5000));
+      // return await new Promise((r) => setTimeout(() => r(user), 2000));
       return user;
     },
   }),

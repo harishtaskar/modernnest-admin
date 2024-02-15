@@ -10,7 +10,11 @@ const useAPI = () => {
     async (path: string, body: any) => {
       try {
         setLoading(true);
-        const response = await axios.post(path, body);
+        const response = await axios.post(path, body, {
+          headers: {
+            Authorization: localStorage.getItem("authorization"),
+          },
+        });
         const data = await response.data;
         console.log(data);
         setData(data);
@@ -41,7 +45,25 @@ const useAPI = () => {
     },
     [data, loading, error]
   );
-  return { postRequest, getRequest, data, loading, error };
+
+  const patchRequest = useCallback(
+    async (path: string, body: any, header: any) => {
+      try {
+        setLoading(true);
+        const response = await axios.patch(path, body, { headers: header });
+        const update = await response.data;
+        setData(update);
+        setLoading(false);
+        return update;
+      } catch (error) {
+        setLoading(false);
+        setError(Error);
+        return error;
+      }
+    },
+    [data, loading, error]
+  );
+  return { postRequest, getRequest, patchRequest, data, loading, error };
 };
 
 export default useAPI;

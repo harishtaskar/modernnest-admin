@@ -182,10 +182,10 @@ const LeftNavigation = () => {
         />
       </div>
     );
-  } else if (currentUser.state === "hasError") {
-    return <ExpiredToken />;
   } else if (currentUser.state === "hasValue") {
     return renderNavBar;
+  } else if (currentUser.state === "hasError") {
+    return;
   }
 };
 
