@@ -1,4 +1,4 @@
-import { useRecoilValue, useRecoilValueLoadable } from "recoil";
+import { useRecoilRefresher_UNSTABLE, useRecoilValueLoadable } from "recoil";
 import RenderScreen from "../screens/RenderScreen";
 import classes from "./index.module.css";
 //@ts-ignore
@@ -8,7 +8,6 @@ import { useEffect, useMemo } from "react";
 import LeftNavigation from "../navbar/LeftNavigation.js";
 import Navbar from "../navbar/Navbar.js";
 import ExpiredToken from "../screens/not-found/ExpiredToken.js";
-import SkeletonLoading from "../shared/SkeletonLoading.js";
 import ServerDown from "../screens/not-found/ServerDown.js";
 
 type Props = {};
@@ -24,40 +23,44 @@ const Root = ({}: Props) => {
     ) {
       navigate("/signin");
     } else {
-      navigate("/?theme=light");
+      navigate("/");
     }
   }, [currentUser]);
 
   const renderScreen = useMemo(() => {
     if (currentUser.state === "loading") {
       return (
-        <div className="background">
+        <div
+          className="background"
+          style={{ backgroundColor: "var(--background)" }}
+        >
           <i
             className="loading"
             style={{
-              borderColor: "white white black black",
+              borderColor:
+                "var(--white) var(--white) var(--text-color) var(--text-color)",
               width: "30px",
               height: "30px",
             }}
           />
         </div>
       );
-    } else if (
-      currentUser.state === "hasValue" &&
-      currentUser.contents !== undefined
-    ) {
-      console.log(currentUser);
-      return (
-        <>
-          <LeftNavigation />
-          <div className="content">
-            <Navbar />
-            <div className={classes.root}>
-              <RenderScreen />
+    } else if (currentUser.state === "hasValue") {
+      if (currentUser.contents !== undefined) {
+        return (
+          <>
+            <LeftNavigation />
+            <div className="content">
+              <Navbar user={currentUser.contents} />
+              <div className={classes.root}>
+                <RenderScreen />
+              </div>
             </div>
-          </div>
-        </>
-      );
+          </>
+        );
+      } else {
+        return <ExpiredToken />;
+      }
     } else if (
       currentUser.state === "hasError" &&
       currentUser.contents.code === "ERR_NETWORK"

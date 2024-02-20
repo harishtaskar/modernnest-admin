@@ -2,48 +2,46 @@ import { useMemo } from "react";
 import Card from "../../HOC/Card";
 import classes from "./index.module.css";
 //@ts-ignore
-import user from "../../../../public/assets/images/user.svg";
 import PersonalDetails from "./components/PersonalDetails";
 import LegalDetails from "./components/LegalDetails";
 import Address from "./components/Address";
+import BusinessDetails from "./components/BusinessDetails";
+import StoreDetails from "./components/StoreDetails";
+import DeleteProfile from "./components/DeleteProfile";
+import ProfilePicture from "./components/ProfilePicture";
+import { useRecoilValueLoadable } from "recoil";
+// @ts-ignore
+import { currentUserState } from "../../../state/atoms/screen.js";
 
 type Props = {};
 
 const Profile = ({}: Props) => {
+  const currentUser = useRecoilValueLoadable(currentUserState);
+  const user: RegisterData = currentUser.contents;
+
   const renderProfile = useMemo(() => {
     return (
       <div className={classes.cardBody}>
-        <div className={classes.top}>
-          <img src={user} alt="user-proifle" className={classes.profile} />
-          <button className="btn-3">Upload photo</button>
-        </div>
+        <ProfilePicture user={user} />
         <div className={classes.details}>
-          <PersonalDetails />
-          <Address />
-          <LegalDetails />
+          <PersonalDetails user={user} />
+          <Address user={user} />
+          <LegalDetails user={user} />
+          <BusinessDetails user={user} />
+          <StoreDetails user={user} />
+          <DeleteProfile user={user} />
         </div>
       </div>
     );
-  }, []);
-
-  const renderProfileDetails = useMemo(() => {
-    return (
-      <div className={classes.cardBody}>
-        <div className={classes.companyDetails}>
-          <PersonalDetails />
-          <PersonalDetails />
-          <PersonalDetails />
-        </div>
-      </div>
-    );
-  }, []);
+  }, [currentUser, user]);
 
   return (
     <div className={classes.screen}>
       <div className={classes.body}>
-        <Card body={renderProfile} style={{ width: "fit-content" }} />
-        <Card body={renderProfileDetails} style={{ width: "fit-content" }} />
-        <Card body={renderProfileDetails} style={{ width: "fit-content" }} />
+        <Card
+          body={renderProfile}
+          style={{ width: "fit-content", height: "calc(100vh - 141px)" }}
+        />
       </div>
     </div>
   );

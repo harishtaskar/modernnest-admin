@@ -4,6 +4,14 @@
     justify-content: center;
     flex-direction: column;
     gap: 20px;
-    min-width: 300px;
+    /* width: 100%; */
+    max-width: 700px;
     margin: 20px;
 }
+
+/* .profile{
+    width: 100px;
+    height: 100px;
+    background-color: var(--text-color);
+    border-radius: 50%;
+} */

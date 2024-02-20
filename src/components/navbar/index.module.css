@@ -42,7 +42,8 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    height: 100px;
+    height: 80px;
+    border-bottom: 1px solid var(--muted-border);
 }
 
 .menu{
@@ -130,18 +131,17 @@
     /* background-color: whitesmoke; */
     height: 100vh;
     background-color: var(--white);
-    transition: 1s width;
     border-right: 1px solid var(--muted-border);
 }
 
 .ul{
+    margin-top: 30px;
     display: flex;
     align-items: flex-start;
     justify-content: center;
     padding: 20px 0px;
     overflow: scroll;
     padding: 0;
-    transition: width 2s;
 }
 
 ul::-webkit-scrollbar{

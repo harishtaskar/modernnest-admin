@@ -3,7 +3,9 @@ import Card from "../../../HOC/Card";
 import classes from "./index.module.css";
 import Chart from "react-apexcharts";
 import SelectBox from "../../../HOC/SelectBox";
-import { useSearchParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+// @ts-ignore
+import { darkmodeState } from "./../../../../state/atoms/screen";
 
 type Props = {
   data: Object;
@@ -12,7 +14,7 @@ type Props = {
 const CategoryWiseSales = ({ data }: Props) => {
   const [month, setMonth] = useState("Jan");
   const [category, setCategory] = useState({});
-  const [searchParams]: any = useSearchParams();
+  const darkmode = useRecoilValue(darkmodeState);
 
   useEffect(() => {
     setCategory(
@@ -47,7 +49,7 @@ const CategoryWiseSales = ({ data }: Props) => {
               },
               theme: {
                 //@ts-ignore
-                mode: searchParams.get("theme"),
+                mode: darkmode ? "dark" : "light",
               },
               labels: Object.keys(category),
               responsive: [
@@ -67,17 +69,17 @@ const CategoryWiseSales = ({ data }: Props) => {
             //@ts-ignore
             series={Object.values(category)}
             type="pie"
-            height={200}
+            height={240}
           />
         </div>
       </div>
     );
-  }, [month, category, searchParams.get("theme")]);
+  }, [month, category, darkmode]);
   return (
     <Card
       body={renderBody}
       style={{
-        flex: 2,
+        flex: 3,
         height: `${outerHeight || "100%"}`,
         minHeight: "200px",
       }}

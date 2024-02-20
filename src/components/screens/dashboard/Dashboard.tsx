@@ -18,10 +18,6 @@ const states = [
     subtitle: "Total Earned",
   },
   {
-    title: "575",
-    subtitle: "Distributions",
-  },
-  {
     title: "35%",
     subtitle: "Growth",
   },

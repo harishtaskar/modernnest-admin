@@ -1,6 +1,7 @@
 .body{
     width: 800px;
-    margin: 25px;
+    padding: 25px;
+    background-color: var(--background);
 }
 
 .form{
@@ -91,4 +92,11 @@
 
 .closeIcon:hover{
     color: var(--text-color);
+}
+
+.buttons{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
 }

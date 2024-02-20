@@ -76,4 +76,11 @@ type Product = {
   specification: string;
   warrantyinfo: string;
   discount?: string;
+  darkmode?: boolean;
+};
+
+type Confimation = {
+  conditionalString: string;
+  title: string;
+  key: "delete-profile" | "delete-profuct";
 };

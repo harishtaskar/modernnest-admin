@@ -15,7 +15,11 @@ import { activeModal } from "./../../state/atoms/screen";
 import { currentUserState } from "../../state/atoms/screen.js";
 import Modal from "../render-model/Modal";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValueLoadable } from "recoil";
+import {
+  useRecoilState,
+  useRecoilValueLoadable,
+  useSetRecoilState,
+} from "recoil";
 import useAPI from "../../hooks/Other/useAPI.js";
 import { PORT } from "../../../config.js";
 import { toast } from "react-toastify";
@@ -35,6 +39,7 @@ type LoginData = {
 const Login = ({ onClose }: Props) => {
   const navigate = useNavigate();
   const currentUser = useRecoilValueLoadable(currentUserState);
+  const [user, setUser] = useRecoilState(currentUserState);
   const { getRequest } = useAPI();
   const [userDetails, setuserDetails] = useState<LoginData>({
     email: "",
@@ -46,7 +51,7 @@ const Login = ({ onClose }: Props) => {
       localStorage.getItem("authorization")?.length &&
       currentUser.state === "hasValue"
     ) {
-      navigate("/?theme=light");
+      navigate("/");
     } else {
       navigate("/signin");
     }
@@ -67,9 +72,10 @@ const Login = ({ onClose }: Props) => {
       const response = await getRequest(`${PORT}/seller/signin`, userDetails);
       console.log(response);
       if (response.res === "ok") {
+        setUser(response.user);
         localStorage.setItem("authorization", response.token);
-        toast.success(response.msg);
-        navigate("/?theme=light");
+        toast.success("Login Successfull");
+        navigate("/");
       } else {
         toast.error(response.msg);
       }

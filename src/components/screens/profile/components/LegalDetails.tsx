@@ -1,11 +1,21 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import Card from "../../../HOC/Card";
 import classes from "./index.module.css";
 import DataLabels from "../../../HOC/DataLabels";
+import useUsers from "../../../../hooks/Users/useUsers";
 
-type Props = {};
+type Props = {
+  user: RegisterData;
+};
 
-const LegalDetails = ({}: Props) => {
+const LegalDetails = ({ user }: Props) => {
+  const { getImageViaUrl } = useUsers();
+
+  const documentHandler = useCallback(async (path: string) => {
+    const url: any = await getImageViaUrl(path);
+    window.open(url, "_blank");
+  }, []);
+
   const renderBody = useMemo(() => {
     return (
       <div className={classes.body}>
@@ -18,9 +28,21 @@ const LegalDetails = ({}: Props) => {
           data="KYC Details"
           action={<button className="btn-3">View</button>}
         />
+        <DataLabels
+          data={user.idverification.name}
+          label={"ID Verification"}
+          action={
+            <button
+              className="btn-3"
+              onClick={() => documentHandler(user.idverification.path)}
+            >
+              View
+            </button>
+          }
+        />
       </div>
     );
-  }, []);
+  }, [user]);
   return <Card body={renderBody} />;
 };
 

@@ -2,14 +2,16 @@ import { useEffect, useMemo, useState } from "react";
 import Card from "../../../HOC/Card";
 import classes from "./index.module.css";
 import Chart from "react-apexcharts";
-import { useSearchParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+// @ts-ignore
+import { darkmodeState } from "./../../../../state/atoms/screen";
 type Props = {
   data: object;
 };
 
 const MonthlySales = ({ data }: Props) => {
   const [sales, setSales] = useState<number[]>([]);
-  const [searchParams] = useSearchParams();
+  const darkmode = useRecoilValue(darkmodeState);
   useEffect(() => {
     Object.values(data).map((item: any) => {
       setSales((prev) => {
@@ -44,7 +46,7 @@ const MonthlySales = ({ data }: Props) => {
               },
               theme: {
                 //@ts-ignore
-                mode: searchParams.get("theme"),
+                mode: darkmode ? "dark" : "light",
                 // palette: "palette6",
               },
               stroke: { lineCap: "round" },
@@ -66,7 +68,7 @@ const MonthlySales = ({ data }: Props) => {
         </div>
       </div>
     );
-  }, [sales, searchParams.get("theme")]);
+  }, [sales, darkmode]);
   return <Card body={renderBody} style={{ flex: 3 }} />;
 };
 

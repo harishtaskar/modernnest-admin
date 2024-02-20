@@ -60,7 +60,7 @@ const Registration = ({ onClose }: Props) => {
       localStorage.getItem("authorization")?.length &&
       currentUser.state === "hasValue"
     ) {
-      navigate("/?theme=light");
+      navigate("/");
     } else {
       navigate("/signup");
     }

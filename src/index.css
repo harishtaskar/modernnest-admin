@@ -5,7 +5,7 @@
   --valid-background: #28ff7a64;
   --invalid-background: #ff2a2a5b;
   --notification-background: "#F8FAFF";
-  --background: #F5F5F9;
+  --background: #f5f5f9;
   --white: #ffffff;
   --white-solid: #ffffff;
   --active-li: rgba(0, 0, 0, 0.04);
@@ -163,6 +163,10 @@ button{
 
 .btn-3.success{
   background-color: var(--valid-background);
+}
+
+.btn-3.fail{
+  background-color: var(--invalid-background);
 }
 
 .btn-3:hover{

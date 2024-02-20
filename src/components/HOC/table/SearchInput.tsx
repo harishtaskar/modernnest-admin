@@ -15,7 +15,7 @@ const SearchInput = ({ onChange }: Props) => {
         placeHolder="🔍 Search"
         id="search"
         require={false}
-        style={{ border: "none" }}
+        style={{ border: "none", backgroundColor: "var(--white)" }}
       />
     </div>
   );

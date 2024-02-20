@@ -4,9 +4,11 @@ import { useRecoilValueLoadable } from "recoil";
 import { currentUserState } from "../../state/atoms/screen.js";
 import SkeletonLoading from "../shared/SkeletonLoading.js";
 
-type Props = {};
+type Props = {
+  user: any;
+};
 
-const Navbar = (props: Props) => {
+const Navbar = ({ user }: Props) => {
   const currentUser = useRecoilValueLoadable(currentUserState);
 
   if (currentUser.state === "loading") {
@@ -22,7 +24,9 @@ const Navbar = (props: Props) => {
       <header className={`${classes.header} ${"flex-row-center"}`}>
         <div className={`${classes.main}`}>
           <div className={classes.left}>
-            <span className={classes.brand}>Hello, Admin 👋</span>
+            <span className={classes.brand}>
+              Hello, {user?.personal?.firstname} 👋
+            </span>
             <div className={classes.linksWeb}></div>
           </div>
           <div className={classes.right}>{/* <UserActions /> */}</div>

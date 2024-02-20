@@ -17,8 +17,10 @@ type Props = {
   value?: any;
   filename?: any;
   style?: CSSProperties;
+  inputTextStyle?: CSSProperties;
   fileloading?: boolean;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  autoComplete?: "on" | "off";
 };
 
 const InputText = ({
@@ -38,6 +40,8 @@ const InputText = ({
   style,
   onBlur,
   fileloading = false,
+  inputTextStyle,
+  autoComplete = "on",
 }: Props) => {
   //Validating email if type is email
   const validateEmail = (email: string) => {
@@ -94,7 +98,7 @@ const InputText = ({
     }
   }, [type]);
   return (
-    <div className={classes.inputText}>
+    <div className={classes.inputText} style={inputTextStyle}>
       <label className={classes.inputLabel} htmlFor={id}>
         {label} {require && <i style={{ color: "red" }}>*</i>}
       </label>
@@ -123,6 +127,7 @@ const InputText = ({
           }}
           minLength={minLength}
           maxLength={maxLength}
+          autoComplete={autoComplete}
         />
         {password && renderEyeButton}
       </div>

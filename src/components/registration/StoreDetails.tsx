@@ -12,6 +12,7 @@ import { storage } from "./../../firebase";
 import { v4 } from "uuid";
 
 import useImages from "../../hooks/Other/useImages.js";
+import TextArea from "../HOC/TextArea.js";
 
 type Props = {
   title?: string;
@@ -95,14 +96,12 @@ const StoreDetails = ({ title }: Props) => {
         onChange={inputChangeHandler}
         value={regState?.store?.name}
       />
-      <InputText
+      <TextArea
         id="description"
-        inputType="text"
         label="Description"
-        placeHolder=""
-        warning="Description is Required"
-        onChange={inputChangeHandler}
+        onChange={(e) => inputChangeHandler(e.target.id, e.target.value)}
         value={regState?.store?.description}
+        rows={3}
       />
       <div className={classes.horizontaldiv}>
         <InputText

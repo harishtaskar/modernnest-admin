@@ -47,10 +47,13 @@ const useAPI = () => {
   );
 
   const patchRequest = useCallback(
-    async (path: string, body: any, header: any) => {
+    async (path: string, body: any, header?: any) => {
       try {
         setLoading(true);
-        const response = await axios.patch(path, body, { headers: header });
+        const token = localStorage.getItem("authorization");
+        const response = await axios.patch(path, body, {
+          headers: { ...header, Authorization: token },
+        });
         const update = await response.data;
         setData(update);
         setLoading(false);

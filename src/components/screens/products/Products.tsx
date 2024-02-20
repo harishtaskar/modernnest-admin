@@ -42,12 +42,16 @@ const Products = (props: Props) => {
           ["data1", "data1", "data1", "data1", "data1"],
           ["data1", "data1", "data1", "data1", "data1"],
           ["data1", "data1", "data1", "data1", "data1"],
-          ["data1", "data1", "data1", "data1", "data1"],
-          ["data1", "data1", "data1", "data1", "data1"],
-          ["data1", "data1", "data1", "data1", "data1"],
-          ["data1", "data1", "data1", "data1", "data1"],
-          ["data1", "data1", "data1", "data1", "data1"],
-          ["data1", "data1", "data1", "data1", "data1"],
+          // ["data1", "data1", "data1", "data1", "data1"],
+          // ["data1", "data1", "data1", "data1", "data1"],
+          // ["data1", "data1", "data1", "data1", "data1"],
+          // ["data1", "data1", "data1", "data1", "data1"],
+          // ["data1", "data1", "data1", "data1", "data1"],
+          // ["data1", "data1", "data1", "data1", "data1"],
+          // ["data1", "data1", "data1", "data1", "data1"],
+          // ["data1", "data1", "data1", "data1", "data1"],
+          // ["data1", "data1", "data1", "data1", "data1"],
+          // ["data1", "data1", "data1", "data1", "data1"],
         ]}
         headers={["header", "header", "header", "header", "header"]}
         searchOnChange={() => {}}
@@ -58,6 +62,7 @@ const Products = (props: Props) => {
         checkedFilterList={filterCheckedList}
         filterResetHandler={() => setFilterCheckedList([])}
         otherActions={<OtherActions />}
+        style={{ height: "100%" }}
       />
     </div>
   );

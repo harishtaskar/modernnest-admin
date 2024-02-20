@@ -43,8 +43,27 @@
 
 
 .body {
+	width: calc(100% - 40px);
 	display: flex;
 	justify-content: center;
-	align-items: center;
-	
+	align-items: flex-start;
+	flex-direction: column;
+	margin: 20px;
+	gap: 15px;
+}
+
+.buttons{
+	/* width: 100%; */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+	align-self: flex-end;
+    gap: 10px;
+}
+
+@media (max-width: 420px) {
+	.buttons{
+		width: 100%;
+		flex-direction: column;
+	}
 }

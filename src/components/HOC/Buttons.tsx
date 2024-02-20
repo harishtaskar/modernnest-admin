@@ -22,7 +22,11 @@ export const PrimaryButton = ({
       onClick={onClick}
       type="submit"
       disabled={isDisable || isLoading}
-      style={isDisable ? { ...style, cursor: "not-allowed" } : { ...style }}
+      style={
+        isDisable
+          ? { ...style, cursor: "not-allowed", opacity: "40%" }
+          : { ...style }
+      }
     >
       {isLoading ? <i className="loading" /> : name}
     </button>

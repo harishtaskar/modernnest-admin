@@ -18,6 +18,7 @@ import { storage } from "../../firebase.js";
 // @ts-ignore
 import { v4 } from "uuid";
 import { PORT } from "./../../../config";
+import axios from "axios";
 
 const useUsers = () => {
   const setRegisterData = useSetRecoilState(registrationDataState);
@@ -181,6 +182,14 @@ const useUsers = () => {
     });
   }, []);
 
+  const deleteCurrentUserProfile = useCallback(async () => {
+    const token = localStorage.getItem("authorization");
+    const response = await axios.delete(`${PORT}/seller/delete`, {
+      headers: { Authorization: token },
+    });
+    return await response.data;
+  }, []);
+
   return {
     onSetRegisterState,
     onSetCurrentUser,
@@ -191,6 +200,7 @@ const useUsers = () => {
     uploadImageFirebase,
     getImageViaUrl,
     deleteImageViaUrl,
+    deleteCurrentUserProfile,
   };
 };
 

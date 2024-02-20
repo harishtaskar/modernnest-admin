@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, ReactNode } from "react";
+import React, { CSSProperties, ChangeEventHandler, ReactNode } from "react";
 import classes from "./index.module.css";
 import SearchInput from "./SearchInput";
 import FilterButton from "./FilterButton";
@@ -14,6 +14,7 @@ type Props = {
   checkedFilterList?: string[];
   otherActions: ReactNode;
   filterResetHandler?: React.MouseEventHandler<HTMLButtonElement>;
+  style?: CSSProperties;
 };
 
 const Table = ({
@@ -27,6 +28,7 @@ const Table = ({
   checkedFilterList,
   filterResetHandler,
   otherActions,
+  style,
 }: Props) => {
   return (
     <>

@@ -3,23 +3,27 @@ import classes from "./index.module.css";
 // @ts-ignore
 import { activeScreen } from "./../../state/atoms/screen.js";
 // @ts-ignore
-import { currentUserState } from "../../state/atoms/screen.js";
+import { currentUserState, darkmodeState } from "../../state/atoms/screen.js";
 import { useEffect, useMemo, useState } from "react";
 import Toggle from "../shared/Toggle.js";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import ExpiredToken from "../screens/not-found/ExpiredToken.js";
+import { useNavigate } from "react-router-dom";
 import SkeletonLoading from "../shared/SkeletonLoading.js";
+import useAPI from "../../hooks/Other/useAPI.js";
+import { PORT } from "../../../config.js";
 
 const LeftNavigation = () => {
-  const [collapsed, setCollapsed] = useState(false);
-  const [searchParam, setSearchParam] = useSearchParams();
+  const [collapsed, setCollapsed] = useState(
+    localStorage.getItem("collapsed") || "false"
+  );
+  const [firstRender, setFirstRender] = useState(false);
   const currentUser = useRecoilValueLoadable(currentUserState);
+  const [darkmode, setDarkmode] = useRecoilState<boolean>(darkmodeState);
   const navigate = useNavigate();
 
   const [activeScreenState, setActiveScreenState] =
-    useRecoilState(activeScreen);
+    useRecoilState<string>(activeScreen);
 
-  console.log(searchParam.get("theme"));
+  const { patchRequest } = useAPI();
 
   // useEffect(() => {
   //   setSearchParam(`?theme=light`);
@@ -27,7 +31,7 @@ const LeftNavigation = () => {
 
   useEffect(() => {
     const headTag = document.getElementsByTagName("head")[0];
-    if (searchParam.get("theme") === "dark") {
+    if (darkmode) {
       const styleTag = document.createElement("style");
       styleTag.id = "styleID";
 
@@ -50,7 +54,38 @@ const LeftNavigation = () => {
         headTag.removeChild(styleTag);
       }
     }
-  }, [searchParam.get("theme")]);
+  }, [darkmode]);
+
+  useEffect(() => {
+    const themeHandler = async () => {
+      await patchRequest(`${PORT}/seller/update`, {
+        update: { darkmode: darkmode },
+      });
+    };
+    if (firstRender) {
+      themeHandler();
+    } else {
+      setFirstRender(true);
+    }
+  }, [darkmode]);
+
+  useEffect(() => {
+    localStorage.getItem("screen")
+      ? ""
+      : localStorage.setItem("screen", "dashboard");
+    setDarkmode(currentUser?.contents?.darkmode);
+    setActiveScreenState(localStorage.getItem("screen") || "dashboard");
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("collapsed", `${collapsed}`);
+  }, [collapsed]);
+
+  useEffect(() => {
+    localStorage.setItem("screen", activeScreenState);
+  }, [activeScreenState]);
+
+  console.log(darkmode);
 
   const renderNavBar = useMemo(() => {
     return (
@@ -59,7 +94,11 @@ const LeftNavigation = () => {
           <div className={classes.title}>
             <button
               className={classes.menu}
-              onClick={() => setCollapsed((prev) => !prev)}
+              onClick={() =>
+                setCollapsed((prev) => {
+                  return prev === "true" ? "false" : "true";
+                })
+              }
             >
               <i
                 className={`${
@@ -67,7 +106,7 @@ const LeftNavigation = () => {
                 } ri-2x`}
               ></i>
             </button>
-            {!collapsed && (
+            {collapsed === "false" && (
               <span className={`${classes.brand} ${classes.light}`}>
                 ModernNest
               </span>
@@ -84,7 +123,7 @@ const LeftNavigation = () => {
                 className="ri-dashboard-2-line"
                 style={{ paddingLeft: "20px" }}
               />
-              {!collapsed && "Dashboard"}
+              {collapsed === "false" && "Dashboard"}
             </li>
             <li
               className={`${classes.li} ${
@@ -96,7 +135,7 @@ const LeftNavigation = () => {
                 className="ri-parking-box-line"
                 style={{ paddingLeft: "20px" }}
               />
-              {!collapsed && "Products"}
+              {collapsed === "false" && "Products"}
             </li>
             <li
               className={`${classes.li} ${
@@ -105,7 +144,7 @@ const LeftNavigation = () => {
               onClick={() => setActiveScreenState("profile")}
             >
               <i className="ri-profile-fill" style={{ paddingLeft: "20px" }} />
-              {!collapsed && "Profile"}
+              {collapsed === "false" && "Profile"}
             </li>
             <li
               className={`${classes.li} ${
@@ -117,7 +156,7 @@ const LeftNavigation = () => {
                 className="ri-equalizer-line"
                 style={{ paddingLeft: "20px" }}
               />
-              {!collapsed && "Settings"}
+              {collapsed === "false" && "Settings"}
             </li>
           </ul>
         </div>
@@ -130,29 +169,20 @@ const LeftNavigation = () => {
               }}
               style={
                 collapsed
-                  ? { marginLeft: "5px" }
+                  ? { marginLeft: "10px" }
                   : {
                       justifyContent: "flex-start",
                       gap: "20px",
-                      marginBottom: "5px",
                       marginLeft: "20px",
                       width: "100%",
                     }
               }
             >
               <Toggle
-                onClick={() => {
-                  setSearchParam(() => {
-                    if (searchParam.get("theme") === "light") {
-                      return `?theme=dark`;
-                    } else {
-                      return `?theme=light`;
-                    }
-                  });
-                }}
-                value={searchParam.get("theme") === "dark" ? true : false}
+                onClick={() => setDarkmode((prev: boolean) => !prev)}
+                value={darkmode}
               />
-              {!collapsed && "Dark Mode"}
+              {collapsed === "false" && "Dark Mode"}
             </li>
             <li
               className={`${classes.li} ${activeScreenState}`}
@@ -166,13 +196,13 @@ const LeftNavigation = () => {
                 className="ri-logout-box-r-line"
                 style={{ paddingLeft: "20px" }}
               />
-              {!collapsed && "Logout"}
+              {collapsed === "false" && "Logout"}
             </li>
           </ul>
         </div>
       </div>
     );
-  }, [activeScreenState, collapsed, searchParam.get("theme")]);
+  }, [activeScreenState, collapsed, darkmode]);
 
   if (currentUser.state === "loading") {
     return (

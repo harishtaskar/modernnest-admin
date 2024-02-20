@@ -2,14 +2,16 @@ import { useEffect, useMemo, useState } from "react";
 import Card from "../../../HOC/Card";
 import classes from "./index.module.css";
 import Chart from "react-apexcharts";
-import { useSearchParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+// @ts-ignore
+import { darkmodeState } from "./../../../../state/atoms/screen";
 type Props = {
   data: object;
 };
 
 const ProductSummary = ({ data }: Props) => {
   const [sales, setSales] = useState<number[]>([]);
-  const [searchParams]: any = useSearchParams();
+  const darkmode = useRecoilValue(darkmodeState);
   useEffect(() => {
     Object.values(data).map((item: any) => {
       setSales((prev) => {
@@ -42,7 +44,7 @@ const ProductSummary = ({ data }: Props) => {
                 categories: Object.keys(data),
               },
               theme: {
-                mode: searchParams.get("theme"),
+                mode: darkmode ? "dark" : "light",
               },
             }}
             series={[
@@ -52,12 +54,12 @@ const ProductSummary = ({ data }: Props) => {
               },
             ]}
             type="bar"
-            height={190}
+            height={225}
           />
         </div>
       </div>
     );
-  }, [sales, searchParams.get("theme")]);
+  }, [sales, darkmode]);
   return <Card body={renderBody} style={{ flex: 4 }} />;
 };
 

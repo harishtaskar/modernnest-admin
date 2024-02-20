@@ -52,12 +52,20 @@
     font-family: sans-serif;
     line-height: 28px;
     border: 1px solid var(--second-border-color);
-    background-color: var(--white);
+    background-color: var(--background);
     border-radius: 8px;
     align-items: center;
     gap: 8px;
     align-self: stretch;
     letter-spacing: 0.5px;
+}
+
+.input::-webkit-scrollbar{
+    display: none;
+}
+
+.input::-webkit-scrollbar-thumb{
+    width: 2px;
 }
 
 .inputForTag{
@@ -71,7 +79,7 @@
     font-weight: 400;
     font-family: sans-serif;
     line-height: 28px;
-    background-color: var(--white);
+    background-color: var(--background);
     border: 1px solid var(--second-border-color);
     border-radius: 8px;
     align-items: flex-start;
@@ -112,7 +120,7 @@
     border-radius: 8px;
     font-size: 16px;
     line-height: 20px;
-    background-color: var(--white);
+    background-color: var(--background);
     border: 1px dashed var(--second-border-color);
 }
 
@@ -197,7 +205,8 @@ textarea{
 
 .eyediv{
     padding-left: 5px;
-    background-color: var(--white);
+    background-color: transparent;
+    color: var(--text-color);
     position: absolute;
     right: 5%;
     top: 31%;
@@ -246,7 +255,7 @@ textarea{
     align-items: center;
     gap: 8px;
     border: 1px solid var(--primary-color);
-    background-color: var(--white);
+    background-color: transparent;
     text-align: center;
     color: var(--primary-color);
     font-size: 14px;
@@ -416,6 +425,7 @@ textarea{
     font-size: 12px;
     color: var(--text-color-2);
     font-weight: 500;
+    text-transform: capitalize;
 }
 
 .datadiv{
@@ -430,7 +440,6 @@ textarea{
     font-size: 14px;
     color: var(--text-color);
     font-weight: 600;
-    max-width: 250px;
     line-height: 22px;
 }
 

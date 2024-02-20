@@ -13,7 +13,8 @@ const Toggle = ({ onClick, value }: Props) => {
         className={classes.input}
         type="checkbox"
         id="switch"
-        defaultChecked={value}
+        // defaultChecked={value}
+        checked={value}
       />
       <label className={classes.label} htmlFor="switch" onClick={onClick}>
         Toggle

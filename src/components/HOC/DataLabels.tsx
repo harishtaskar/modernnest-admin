@@ -2,7 +2,7 @@ import classes from "./index.module.css";
 
 type Props = {
   label?: string;
-  data: string;
+  data: any;
   action?: any;
 };
 

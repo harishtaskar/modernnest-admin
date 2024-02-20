@@ -4,12 +4,22 @@ import { PORT } from "./../../../config";
 
 export const activeScreen = atom({
   key: "active-screen",
-  default: "dashboard",
+  default: undefined,
 });
 
 export const activeModal = atom({
   key: "active-modal",
   default: "",
+});
+
+export const darkmodeState = atom({
+  key: "dark-mode",
+  default: undefined,
+});
+
+export const confirmationState = atom({
+  key: "confirmation",
+  default: {},
 });
 
 export const currentUserState = atom({
@@ -18,13 +28,15 @@ export const currentUserState = atom({
     key: "current-user-selector",
     get: async () => {
       const token = localStorage.getItem("authorization");
-      const response = await axios.get(`${PORT}/seller/`, {
-        headers: { Authorization: token },
-      });
-      console.log(response);
-      const user = await response.data.user;
-      // return await new Promise((r) => setTimeout(() => r(user), 2000));
-      return user;
+      if (token) {
+        const response = await axios.get(`${PORT}/seller/`, {
+          headers: { Authorization: token },
+        });
+        console.log(response);
+        const user = await response.data.user;
+        // return await new Promise((r) => setTimeout(() => r(user), 1000));
+        return user;
+      }
     },
   }),
 });

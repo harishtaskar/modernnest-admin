@@ -3,7 +3,9 @@ import Chart from "react-apexcharts";
 import classes from "./index.module.css";
 import SelectBox from "../../../HOC/SelectBox";
 import Card from "../../../HOC/Card";
-import { useSearchParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+// @ts-ignore
+import { darkmodeState } from "./../../../../state/atoms/screen";
 
 type Props = {
   data: Object;
@@ -12,7 +14,7 @@ type Props = {
 const MonthWiseSales = ({ data }: Props) => {
   const [month, setMonth] = useState<any>("Jan");
   const [sales, setSales] = useState<any>([]);
-  const [searchParams]: any = useSearchParams();
+  const darkmode = useRecoilValue(darkmodeState);
 
   useEffect(() => {
     setSales(Object.entries(data).filter((item) => item[0] === month)[0]);
@@ -51,7 +53,7 @@ const MonthWiseSales = ({ data }: Props) => {
               },
               theme: {
                 //@ts-ignore
-                mode: searchParams.get("theme"),
+                mode: darkmode ? "dark" : "light",
               },
               stroke: { width: 2 },
               chart: { id: "monthly-sales", background: "var(--white)" },
@@ -73,7 +75,7 @@ const MonthWiseSales = ({ data }: Props) => {
         </div>
       </div>
     );
-  }, [month, sales, searchParams.get("theme")]);
+  }, [month, sales, darkmode]);
   return <Card body={renderBody} style={{ flex: 4 }} />;
 };
 
