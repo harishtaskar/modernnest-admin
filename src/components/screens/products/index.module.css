@@ -2,3 +2,55 @@
     padding: 30px;
     max-height: calc(100vh - 141px);
 }
+
+.product-actions{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.product-action{
+    cursor: pointer;
+}
+
+.more{
+    position: relative;
+}
+
+.more-actions{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.more-actions-list{
+    z-index: 4;
+    min-width: 180px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    right: 0;
+    background: var(--background);
+    border-radius: 4px;
+    gap: 2px;
+    border: 1px solid var(--muted-border);
+}
+
+.more-action{
+    white-space: nowrap;
+    padding: 14px 10px;
+    border: none;
+    text-align: start;
+    outline: none;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: var(--background);
+}
+
+.more-action:hover{
+    background-color: var(--white);
+    color: red;
+}

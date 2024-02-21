@@ -16,7 +16,6 @@ const useAPI = () => {
           },
         });
         const data = await response.data;
-        console.log(data);
         setData(data);
         setLoading(false);
         return data;

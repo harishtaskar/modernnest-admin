@@ -91,7 +91,6 @@ const ProductDetailsForm = () => {
   const { uploadImageFirebase, getImageViaUrl, deleteImageViaUrl } = useUsers();
   const { toBase64 } = useImages();
 
-  console.log(productDetails);
 
   useEffect(() => {
     setProductDetails((prev: any) => {
@@ -106,7 +105,6 @@ const ProductDetailsForm = () => {
     async (images: any[]) => {
       setImagesLoading(true);
       let imagesArray = Object.values(images);
-      console.log(imagesArray);
       await Promise.all(
         imagesArray.map(async (image: any) => {
           let base64 = await toBase64(image);

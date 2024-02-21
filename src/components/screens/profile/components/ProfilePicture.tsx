@@ -36,7 +36,6 @@ const ProfilePicture = ({ user }: Props) => {
       setLoading(false);
       setImage(url);
     };
-    console.log(user);
 
     documentHandler(user.store.logo.path);
   }, [currentUser]);
@@ -44,7 +43,6 @@ const ProfilePicture = ({ user }: Props) => {
   const uploadImage = useCallback(
     async (event: any) => {
       const image = event.target.files[0];
-      console.log(image);
 
       const imageBase64 = await toBase64(image);
       const imageUrl = await uploadImageFirebase(

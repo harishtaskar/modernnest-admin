@@ -68,7 +68,6 @@ const Registration = ({ onClose }: Props) => {
 
   // rendering appropreate form of registering data
   const renderForms = useMemo(() => {
-    console.log(registerData);
     switch (activeForm.name) {
       case "personal":
         return <PersonalDataForm title="Personal Details" />;
@@ -158,7 +157,6 @@ const Registration = ({ onClose }: Props) => {
           const apiResponse = await postRequest(`${PORT}/seller/signup`, {
             user: registerData,
           });
-          console.log(apiResponse);
           if (apiResponse?.res === "ok") {
             toast.success("🚀 Registration Successfull");
             navigate("/signin");

@@ -9,9 +9,11 @@ import Modal from "../../../render-model/Modal";
 import classes from "./index.module.css";
 import ProductDetailsForm from "./ProductDetailsForm";
 import PrimaryButton, { SecondaryButton } from "../../../HOC/Buttons";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 // @ts-ignore
 import { productDetailState } from "../state/index.js";
+// @ts-ignore
+import { recallProductsAPI } from "../../../../state/atoms/screen.js";
 import { toast } from "react-toastify";
 import useAPI from "../../../../hooks/Other/useAPI.js";
 import { PORT } from "../../../../../config.js";
@@ -22,8 +24,9 @@ type Props = {
 
 const AddProduct = ({ onClose }: Props) => {
   const [disable, setDisable] = useState(true);
-  const productDetails: Product = useRecoilValue(productDetailState);
-
+  const [productDetails, setProductDetails] =
+    useRecoilState<Product>(productDetailState);
+  const setRecallAPI = useSetRecoilState(recallProductsAPI);
   const { postRequest } = useAPI();
 
   const isFilled = () => {
@@ -53,29 +56,34 @@ const AddProduct = ({ onClose }: Props) => {
     if (productDetails?.images?.length > 0) {
       toast.info("Clear all images");
     } else {
-      console.log("Closed");
       onClose(e);
     }
   };
 
   useEffect(() => {
-    console.log("changes");
     if (isFilled()) {
       setDisable(false);
     }
   }, [productDetails]);
 
-  const submitHandler = useCallback(async () => {
-    ("Add Product To Database");
-    const response = await postRequest(`${PORT}/product/add`, {
-      product: productDetails,
-    });
-    if (response.res === "ok") {
-      toast.success(response.msg);
-    } else {
-      toast.error(response.msg);
-    }
-  }, []);
+  const submitHandler = useCallback(
+    async (event: any) => {
+      ("Add Product To Database");
+      const response = await postRequest(`${PORT}/product/add`, {
+        product: productDetails,
+      });
+      if (response.res === "ok") {
+        toast.success(response.msg);
+        //@ts-ignore
+        setProductDetails({});
+        setRecallAPI(Math.random() * 9);
+        onClose(event);
+      } else {
+        toast.error("fill all fields");
+      }
+    },
+    [productDetails]
+  );
 
   const renderBody = useMemo(() => {
     return (

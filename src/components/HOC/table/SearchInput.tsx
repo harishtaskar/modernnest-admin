@@ -1,4 +1,3 @@
-import React from "react";
 import InputText from "../InputText";
 import classes from "../index.module.css";
 
@@ -12,7 +11,7 @@ const SearchInput = ({ onChange }: Props) => {
       <InputText
         onChange={onChange}
         inputType="text"
-        placeHolder="🔍 Search"
+        placeHolder="Search"
         id="search"
         require={false}
         style={{ border: "none", backgroundColor: "var(--white)" }}

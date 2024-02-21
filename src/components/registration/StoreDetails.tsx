@@ -31,9 +31,9 @@ const StoreDetails = ({ title }: Props) => {
   const { toBase64 } = useImages();
 
   const renderShippingMethods = useMemo(() => {
-    return ShippingMethods.map((item) => {
+    return ShippingMethods.map((item, index) => {
       return (
-        <option key={item} value={item}>
+        <option key={index} value={item}>
           {item}
         </option>
       );

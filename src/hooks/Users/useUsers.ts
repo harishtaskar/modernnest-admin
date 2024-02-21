@@ -27,7 +27,6 @@ const useUsers = () => {
   const Navigate = useNavigate();
 
   const onSetRegisterState = useCallback((key: string, input: string) => {
-    console.log("key--->" + key, "  input--->", input);
     setRegisterData((prev: any) => {
       return { ...prev, [key]: input };
     });
@@ -45,15 +44,12 @@ const useUsers = () => {
       const CurrentUser = await res.json();
       if (res.status === 200) {
         if (CurrentUser.messege === "ok") {
-          console.log(CurrentUser);
           setCurrentUser(CurrentUser.user);
         } else {
-          console.log(CurrentUser.messege);
           setCurrentUser("");
           Navigate("/");
         }
       } else {
-        console.log(CurrentUser.messege);
         setCurrentUser("");
         Navigate("/");
       }
@@ -139,12 +135,10 @@ const useUsers = () => {
           "Image size should be less than " + limitsize / 1024 + "KB"
         );
       } else {
-        console.log(image.name);
         const imagePath = `${path}/${image.name + v4()}`;
         const imageRef = ref(storage, imagePath);
         return new Promise(async (resolve) => {
           const upload: any = await uploadString(imageRef, base64, "data_url");
-          console.log(upload);
           resolve(upload.metadata.fullPath);
         });
       }

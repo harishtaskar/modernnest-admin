@@ -70,7 +70,6 @@ const Login = ({ onClose }: Props) => {
     async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
       const response = await getRequest(`${PORT}/seller/signin`, userDetails);
-      console.log(response);
       if (response.res === "ok") {
         setUser(response.user);
         localStorage.setItem("authorization", response.token);

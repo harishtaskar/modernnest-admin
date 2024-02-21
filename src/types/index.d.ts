@@ -80,7 +80,8 @@ type Product = {
 };
 
 type Confimation = {
+  id: string;
   conditionalString: string;
   title: string;
-  key: "delete-profile" | "delete-profuct";
+  key: "delete-profile" | "delete-product";
 };

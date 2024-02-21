@@ -97,7 +97,7 @@ const MultiSelectorInput = ({
               className={styles.li}
             >
               <input
-                type="checkbox"
+                type={"checkbox"}
                 id={"all states"}
                 value={"all states"}
                 name={"all states"}

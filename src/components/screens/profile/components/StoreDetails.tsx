@@ -21,7 +21,6 @@ const StoreDetails = ({ user }: Props) => {
       <div className={classes.body}>
         <span className="subheading">Store Details</span>
         {Object.entries(user.store).map((item: any[], index: number) => {
-          console.log(item);
           if (typeof item[1] === "object") {
             return (
               <DataLabels

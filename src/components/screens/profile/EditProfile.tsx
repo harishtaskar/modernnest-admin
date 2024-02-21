@@ -29,7 +29,6 @@ const EditProfile = ({ onClose }: Props) => {
       const response = await patchRequest(`${PORT}/seller/update`, {
         update: update,
       });
-      console.log(response);
       if (response.res === "ok") {
         setCurrentUser(response.update);
         toast.success(" 🔥 Profile Updated Successfully");
@@ -94,8 +93,6 @@ const EditProfile = ({ onClose }: Props) => {
     [update, currentUser]
   );
 
-  console.log(update);
-  console.log(user);
 
   const renderProfileFields = useMemo(() => {
     if (user) {

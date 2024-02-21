@@ -3,12 +3,15 @@ import Modal from "../render-model/Modal";
 import classes from "./toggle.module.css";
 import InputText from "../HOC/InputText";
 import PrimaryButton, { SecondaryButton } from "../HOC/Buttons";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 //@ts-ignore
 import { confirmationState } from "../../state/atoms/screen.js";
+//@ts-ignore
+import { recallProductsAPI } from "../../state/atoms/screen.js";
+
 import useUsers from "../../hooks/Users/useUsers";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import useProduct from "../../hooks/Product/useProduct.js";
 
 type Props = {
   onClose: React.MouseEventHandler<HTMLButtonElement>;
@@ -21,12 +24,11 @@ Props) => {
   const [disable, setDisable] = useState(true);
   const confirmation: Confimation = useRecoilValue(confirmationState);
   const { deleteCurrentUserProfile } = useUsers();
-  const navigate = useNavigate();
+  const { deleteProduct } = useProduct();
+  const setRecallAPI = useSetRecoilState(recallProductsAPI);
 
   const onChangeHandler = useCallback(
     (id: any, value: any) => {
-      console.log(value);
-
       if (confirmation?.conditionalString === value) {
         setDisable(false);
       } else {
@@ -45,9 +47,15 @@ Props) => {
       } else {
         toast.error(response.msg);
       }
-    } else if (confirmation?.key === "delete-profuct") {
-      console.log("else");
-      // do something to delete product
+    } else if (confirmation?.key === "delete-product") {
+      const response = await deleteProduct(confirmation.id);
+      if ((await response.res) === "ok") {
+        toast.success(response.msg);
+        onClose(event);
+        setRecallAPI(confirmation.id);
+      } else {
+        toast.error(response.msg);
+      }
     }
   }, []);
 
@@ -56,7 +64,11 @@ Props) => {
       <div className={classes.body}>
         <span className="heading">{confirmation.title}</span>
         <span className="normal-text">
-          Enter {confirmation.conditionalString} to Delete Permanently.
+          Enter{" "}
+          <span style={{ textDecoration: "underline" }}>
+            {confirmation.conditionalString}
+          </span>{" "}
+          to Delete Permanently.
         </span>
         <InputText
           id="condition"

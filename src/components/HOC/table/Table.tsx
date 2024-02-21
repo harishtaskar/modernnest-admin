@@ -4,7 +4,7 @@ import SearchInput from "./SearchInput";
 import FilterButton from "./FilterButton";
 
 type Props = {
-  rows: string[][];
+  rows: object[];
   headers: string[];
   searchOnChange: Function;
   searchEnable?: boolean;
@@ -49,7 +49,11 @@ const Table = ({
           <div className={classes["table-header"]}>
             {headers.map((item, index) => {
               return (
-                <div key={index} className={classes["table-head"]}>
+                <div
+                  key={index}
+                  className={classes["table-head"]}
+                  style={item === "" ? { width: "20%" } : {}}
+                >
                   {item}
                 </div>
               );
@@ -57,19 +61,27 @@ const Table = ({
           </div>
 
           <div className={classes["table-body"]}>
-            {rows?.map((row, index) => {
-              return (
-                <div key={index} className={classes["table-row"]}>
-                  {row?.map((data, index) => {
-                    return (
-                      <div key={index} className={classes["table-data"]}>
-                        {data}
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            })}
+            {rows.length ? (
+              rows?.map((row: any, index) => {
+                return (
+                  <div key={index} className={classes["table-row"]}>
+                    {headers?.map((header, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className={classes["table-data"]}
+                          style={header === "" ? { width: "20%" } : {}}
+                        >
+                          {row[headers[index]]}
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })
+            ) : (
+              <span style={{ marginTop: "40px" }}>Empty Product List</span>
+            )}
           </div>
           <i className={classes["table-footer"]} />
         </div>

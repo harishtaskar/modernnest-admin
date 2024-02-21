@@ -9,3 +9,8 @@ export const productDetailState = atom({
   key: "product-details",
   default: {},
 });
+
+export const productState = atom({
+  key: "products",
+  default: [],
+});

@@ -70,10 +70,10 @@ const LeftNavigation = () => {
   }, [darkmode]);
 
   useEffect(() => {
-    localStorage.getItem("screen")
+    localStorage.getItem("screen") !== "undefined"
       ? ""
       : localStorage.setItem("screen", "dashboard");
-    setDarkmode(currentUser?.contents?.darkmode);
+    setDarkmode(currentUser?.contents?.darkmode || false);
     setActiveScreenState(localStorage.getItem("screen") || "dashboard");
   }, []);
 
@@ -84,8 +84,6 @@ const LeftNavigation = () => {
   useEffect(() => {
     localStorage.setItem("screen", activeScreenState);
   }, [activeScreenState]);
-
-  console.log(darkmode);
 
   const renderNavBar = useMemo(() => {
     return (
@@ -101,9 +99,11 @@ const LeftNavigation = () => {
               }
             >
               <i
-                className={`${
-                  collapsed ? "ri-menu-unfold-line" : "ri-menu-fold-line"
-                } ri-2x`}
+                className={
+                  collapsed === "true"
+                    ? "ri-menu-unfold-line ri-2x"
+                    : "ri-menu-fold-line ri-2x"
+                }
               ></i>
             </button>
             {collapsed === "false" && (

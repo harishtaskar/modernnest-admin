@@ -42,7 +42,6 @@ const FilterButton = ({
           if (button === "") {
             setIsActive((prev) => !prev);
           }
-          console.log(button);
         }}
       >
         {button?.length > 0 ? button : "Filters"}

@@ -20,7 +20,6 @@ const MonthWiseSales = ({ data }: Props) => {
     setSales(Object.entries(data).filter((item) => item[0] === month)[0]);
   }, [month]);
 
-  console.log(sales);
 
   const renderBody = useMemo(() => {
     return (

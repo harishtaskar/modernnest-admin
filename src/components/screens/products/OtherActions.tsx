@@ -18,7 +18,7 @@ const OtherActions = () => {
   const renderIcon = useMemo(() => {
     return (
       <>
-        <i className="ri-add-line ri-xl" />
+        {/* <i className="ri-add-line ri-xl" /> */}
         Add Product
       </>
     );
