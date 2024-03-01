@@ -14,6 +14,8 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { productDetailState } from "../state/index.js";
 // @ts-ignore
 import { recallProductsAPI } from "../../../../state/atoms/screen.js";
+// @ts-ignore
+import { currentUserState } from "../../../../state/atoms/screen.js";
 import { toast } from "react-toastify";
 import useAPI from "../../../../hooks/Other/useAPI.js";
 import { PORT } from "../../../../../config.js";
@@ -23,18 +25,18 @@ type Props = {
 };
 
 const AddProduct = ({ onClose }: Props) => {
+  const currentUser: any = useRecoilValue(currentUserState);
   const [disable, setDisable] = useState(true);
   const [productDetails, setProductDetails] =
     useRecoilState<Product>(productDetailState);
   const setRecallAPI = useSetRecoilState(recallProductsAPI);
   const { postRequest } = useAPI();
 
-  const isFilled = () => {
+  const isFilled = useCallback(() => {
     let filled = false;
     if (
       productDetails?.availability?.length > 0 &&
       productDetails?.brand &&
-      productDetails?.category &&
       productDetails?.description &&
       productDetails?.document &&
       productDetails?.images?.length > 1 &&
@@ -50,7 +52,7 @@ const AddProduct = ({ onClose }: Props) => {
       filled = true;
     }
     return filled;
-  };
+  }, [productDetails]);
 
   const closeHandler = (e: any) => {
     if (productDetails?.images?.length > 0) {
@@ -69,9 +71,13 @@ const AddProduct = ({ onClose }: Props) => {
   const submitHandler = useCallback(
     async (event: any) => {
       ("Add Product To Database");
-      const response = await postRequest(`${PORT}/product/add`, {
-        product: productDetails,
-      });
+      const response = await postRequest(
+        `${PORT}/product/add`,
+        {
+          product: productDetails,
+        },
+        { _id: currentUser._id }
+      );
       if (response.res === "ok") {
         toast.success(response.msg);
         //@ts-ignore
@@ -94,19 +100,30 @@ const AddProduct = ({ onClose }: Props) => {
           <SecondaryButton
             name={"Cancel"}
             onClick={closeHandler}
-            style={{ width: "fit-content" }}
+            style={{
+              width: "fit-content",
+            }}
           />
           <PrimaryButton
             isDisable={disable}
             name={"Submit"}
             onClick={submitHandler}
-            style={{ width: "fit-content" }}
+            style={{
+              width: "fit-content",
+            }}
           />
         </div>
       </div>
     );
   }, [productDetails]);
-  return <Modal body={renderBody} onClose={onClose} closeBtn={false} />;
+  return (
+    <Modal
+      body={renderBody}
+      onClose={onClose}
+      closeBtn={false}
+      modalstyle={{ margin: "20px" }}
+    />
+  );
 };
 
 export default AddProduct;

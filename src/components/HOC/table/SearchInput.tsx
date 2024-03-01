@@ -14,7 +14,10 @@ const SearchInput = ({ onChange }: Props) => {
         placeHolder="Search"
         id="search"
         require={false}
-        style={{ border: "none", backgroundColor: "var(--white)" }}
+        style={{
+          border: "1px solid var(--muted-border)",
+          backgroundColor: "var(--white)",
+        }}
       />
     </div>
   );

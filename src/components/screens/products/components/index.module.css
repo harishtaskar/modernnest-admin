@@ -1,0 +1,239 @@
+.detailed-row{
+    width: calc(100% - 30px);
+    height: 100%;
+    padding: 6px;
+    background-color: var(--background);
+    margin-left: 10px;
+    margin-bottom: 10px;
+    border-left: 6px solid var(--primary-color);
+    animation: detail-animator 500ms ease-in-out;
+    overflow: hidden;
+    position: relative;
+}
+
+@keyframes detail-animator {
+    from {
+        height:  0px;
+    }
+    to {
+        height: 430px;
+    }
+}
+
+.row{
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 4px;
+    text-align: start;
+}
+
+.details{
+    width: calc(100% - 20px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.key{
+    text-transform: capitalize;
+    color: var(--text-color-2);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 22px;
+    margin: 0px;
+}
+
+.value{
+    line-height: 22px;
+    text-align: start;
+}
+
+.links{
+    width: calc(100% - 20px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.link{
+    /* max-width: 800px; */
+    white-space: pre-wrap !important;
+    overflow: hidden;
+    word-wrap: break-word;
+    word-break: break-word;
+    color: var(--primary-color);
+    /* text-overflow: ellipsis; */
+}
+
+.document{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-flow: wrap;
+}
+
+
+.images-title{
+    width: calc(100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.line-div{
+    display: flex;
+    align-items: center;
+    padding: 2px 6px;
+    width: 100%;
+    border: 1px solid var(--muted-border);
+    /* border-radius: 4px; */
+    cursor: pointer;
+}
+
+.line{
+    display: block;
+    width: 100%;
+    line-height: 22px;
+    height: 2px;
+    border-radius: 8px;
+    background-color: var(--text-color-2);
+    opacity: 0.8;
+    margin-left: 5px;
+}
+
+.line-icon{
+    color: var(--text-color-2);
+}
+
+.images{
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
+    overflow-x: auto;
+    /* scroll-snap-type: x mandatory; */
+    /* scroll-snap-align: center; */
+    animation: image-animator 500ms ease-in-out;
+}
+
+@keyframes image-animator {
+    from {
+        height:  0px;
+    }
+    to {
+        height: 200px;
+    }
+}
+
+
+.image{
+    /* object-fit: cover; */
+    width: 100%;
+    height: 100%;
+    max-width: 200px;
+    max-height: 200px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.btn-div{
+    /* width: 100%; */
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+
+}
+
+.btn-more{
+    padding: 5px 10px;
+}
+
+.btn-more:hover{
+    font-weight: 600;
+}
+
+.images-container{
+    display: flex;
+    width: calc(100% - 40px);
+    height: calc(100vh - 160px);
+    margin: 30px 20px;
+}
+
+ .modal-image{
+    height: 200px;
+    width: 200px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.images-body{
+    --auto-grid-min-size: 16rem;
+    display: flex;
+    flex-flow: wrap;
+    gap: 10px;
+    padding: 0;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    max-height: calc(100vh - 160px);
+    overflow-y: scroll;
+    padding-right: 5px;
+}
+  
+
+.images-body::-webkit-scrollbar{
+    display: block;
+    width: 5px;
+}
+
+.images-body::-webkit-scrollbar-thumb{
+    background-color: var(--text-color-2); /* Set the color of the scrollbar thumb */
+    border-radius: 12px;
+}
+
+.images-body::-webkit-scrollbar-track{
+    background: var(--background);
+}  
+
+.image-preview-container{
+    width: calc(100% - 260px);
+    padding: 0px 20px;
+    max-height: calc(100vh - 165px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: hidden;
+    background-size: cover;
+    background-position: cover;
+}
+
+.image-preview{
+    /* width: 100%;  */
+    height: 100%;
+    object-fit: contain;
+    cursor: crosshair;
+}
+
+@media (max-width: 1024px) {
+    .key{
+        font-size: 12px;
+        line-height: 14px;
+    }
+    .value{
+        line-height: 14px;
+        font-size: 12px;
+    }
+    .link{
+        line-height: 14px;
+        font-size: 12px;
+    }
+}

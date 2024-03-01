@@ -20,7 +20,7 @@ const DeleteProfile = ({ user }: Props) => {
     setConfirmation({
       key: "delete-profile",
       title: "Delete Profile",
-      conditionalString: "delete_profile",
+      conditionalString: "deleteprofile",
     });
     setActiveModal("confirmation");
   }, []);

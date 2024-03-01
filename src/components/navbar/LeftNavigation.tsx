@@ -46,6 +46,7 @@ const LeftNavigation = () => {
         --second-text-color: #c7c7c7;
         --second-border-color: #616161;
         --active-li: rgba(255, 255, 255, 0.15);
+        --skeleton: #e2e5e753;
       }`;
       headTag.appendChild(styleTag);
     } else {

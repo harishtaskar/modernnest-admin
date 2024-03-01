@@ -122,6 +122,7 @@
     line-height: 20px;
     background-color: var(--background);
     border: 1px dashed var(--second-border-color);
+    color: var(--text-color);
 }
 
 .select{
@@ -242,13 +243,13 @@ textarea{
     border-radius: 8px;
     transition-duration: 0.4s;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 .secondaryButton
 {
     width: 100%;
     display: flex;
-    min-height: 36px;
     min-height: 48px;
     padding: 0px 32px;
     justify-content: center;
@@ -265,7 +266,9 @@ textarea{
     border-radius: 8px;
     cursor: pointer;
     transition-duration: 0.4s;
+    white-space: nowrap;
 }
+
 
 .secondaryButton:hover{
     background-color: rgb(36, 165, 240, 0.1);

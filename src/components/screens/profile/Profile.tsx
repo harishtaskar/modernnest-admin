@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Card from "../../HOC/Card";
 import classes from "./index.module.css";
 //@ts-ignore

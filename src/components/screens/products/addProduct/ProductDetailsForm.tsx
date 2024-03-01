@@ -91,7 +91,6 @@ const ProductDetailsForm = () => {
   const { uploadImageFirebase, getImageViaUrl, deleteImageViaUrl } = useUsers();
   const { toBase64 } = useImages();
 
-
   useEffect(() => {
     setProductDetails((prev: any) => {
       return {
@@ -368,7 +367,6 @@ const ProductDetailsForm = () => {
         id="urls"
         label="Product Url's"
         require={true}
-        randomColor={true}
         smallLabel="url"
         warning="Atleast One URL required"
         tagList={linksHandler}

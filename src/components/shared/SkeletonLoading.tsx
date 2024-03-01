@@ -5,7 +5,7 @@ type Props = {
 };
 
 const SkeletonLoading = ({ style }: Props) => {
-  return <i className="skeleton" style={style} />;
+  return <i className={"skeleton"} style={style} />;
 };
 
 export default SkeletonLoading;

@@ -8,15 +8,19 @@ import { filterCheckedState } from "./state/index";
 import { productState } from "./state/index";
 // @ts-ignore
 import { recallProductsAPI } from "../../../state/atoms/screen.js";
+// @ts-ignore
+import { currentUserState } from "../../../state/atoms/screen.js";
 import OtherActions from "./OtherActions";
 import useAPI from "../../../hooks/Other/useAPI";
 import { PORT } from "../../../../config";
 import ProductActions from "./components/ProductActions";
 import MoreActions from "./components/MoreActions";
+import DetailedRow from "./components/DetailedRow.js";
 
 type Props = {};
 
-const Products = (props: Props) => {
+const Products = ({}: Props) => {
+  const currentUser: any = useRecoilValue(currentUserState);
   const [filterCheckedList, setFilterCheckedList] =
     useRecoilState<string[]>(filterCheckedState);
   const tableHeaders: string[] = [
@@ -31,14 +35,14 @@ const Products = (props: Props) => {
   const recallAPI = useRecoilValue(recallProductsAPI);
   const [filter, setFilter] = useState<string>("");
   const [products, setProducts] = useRecoilState<any[]>(productState);
+  const [detailedRowVisible, setDetailedRowVisible] = useState<any[]>([]);
   const { getRequest } = useAPI();
 
   useEffect(() => {
     const debounce = setTimeout(async () => {
-      const response = await getRequest(
-        `${PORT}/product/?filter=${filter}`,
-        {}
-      );
+      const response = await getRequest(`${PORT}/product/?filter=${filter}`, {
+        _id: currentUser._id,
+      });
       setProducts(response.products);
     }, 600);
     return () => clearTimeout(debounce);
@@ -64,50 +68,99 @@ const Products = (props: Props) => {
     [filterCheckedList]
   );
 
-  const addRowInTable = useCallback((key: string, item: any, row: object) => {
-    if (
-      key === "brand" ||
-      key === "name" ||
-      key === "category" ||
-      key === "quantity" ||
-      key === "price"
-    ) {
-      row = { ...row, [key]: item };
-    } else if (key === "__v") {
-      row = {
+  const addRowInTable = useCallback(
+    (key: string, item: any, row: object, rowdetails: any) => {
+      if (
+        key === "brand" ||
+        key === "name" ||
+        key === "category" ||
+        key === "quantity" ||
+        key === "price"
+      ) {
+        row = { ...row, [key]: item };
+      } else if (key === "__v") {
+        row = {
+          ...row,
+          ["actions"]: (
+            <ProductActions
+              disclosed={detailedRowVisible.includes(rowdetails._id)}
+            />
+          ),
+        };
+      } else if (key === "_id") {
+        row = {
+          ...row,
+          [""]: <MoreActions id={item} />,
+          ["details"]: (
+            <DetailedRow
+              data={rowdetails}
+              visible={detailedRowVisible.includes(rowdetails._id)}
+            />
+          ),
+        };
+      }
+      return {
         ...row,
-        ["actions"]: <ProductActions />,
+        rowdetails,
+        isDetailVisible: detailedRowVisible.includes(rowdetails._id),
       };
-    } else if (key === "_id") {
-      row = {
-        ...row,
-        [""]: <MoreActions id={item} />,
-      };
-    }
-    return row;
-  }, []);
+    },
+    [detailedRowVisible]
+  );
 
   const renderRows = useMemo(() => {
-    let rows: object[] = [];
-    products?.forEach((item) => {
-      let row: object = {};
-      Object.entries(item)?.forEach((item: any) => {
-        row = addRowInTable(item[0], item[1], row);
+    let rows: any[] = [];
+    products?.forEach((rowdetails) => {
+      let row: any = {};
+      Object.entries(rowdetails)?.forEach((item: any) => {
+        row = addRowInTable(item[0], item[1], row, rowdetails);
       });
-      rows.push(row);
+
+      if (row?.quantity === 0) {
+        rows.push({ ...row, outofstock: true });
+      } else {
+        rows.push(row);
+      }
     });
-    return rows;
-  }, [products, filter]);
+
+    if (filterCheckedList.includes("Low - High (Price)")) {
+      return rows.sort((a, b) => a.price - b.price);
+    } else if (filterCheckedList.includes("High - Low (Price)")) {
+      return rows.sort((a, b) => b.price - a.price);
+    } else if (filterCheckedList.includes("Out of Stock")) {
+      return rows.filter((row) => row.quantity === 0);
+    } else if (filterCheckedList.includes("Available Products")) {
+      return rows.filter((row) => row.quantity !== 0);
+    } else {
+      return rows;
+    }
+  }, [products, filter, filterCheckedList, detailedRowVisible]);
+
+  const rowClickHandler = useCallback((data: any) => {
+    setDetailedRowVisible((prev: any[]) => {
+      if (prev.includes(data.rowdetails._id)) {
+        return prev.filter((item) => item !== data.rowdetails._id);
+      } else {
+        return [...prev, data.rowdetails._id];
+      }
+    });
+  }, []);
 
   return (
     <div className={classes.screen}>
       <Table
+        tableRowClicked={rowClickHandler}
         rows={renderRows}
         headers={tableHeaders}
         searchOnChange={searchHandler}
         searchEnable={true}
         filterEnable={true}
-        filterList={["A-Z", "Z-A", "Pending"]}
+        filterList={[
+          "Low - High (Price)",
+          "High - Low (Price)",
+          "Out of Stock",
+          "Available Products",
+        ]}
         filterChecked={onFilterChecked}
         checkedFilterList={filterCheckedList}
         filterResetHandler={() => setFilterCheckedList([])}

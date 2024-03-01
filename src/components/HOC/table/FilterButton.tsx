@@ -29,7 +29,10 @@ const FilterButton = ({
   }, []);
 
   return (
-    <div className={classes.main} ref={divRef}>
+    <div
+      className={classes.main}
+      ref={divRef}
+    >
       <div
         tabIndex={0}
         className={

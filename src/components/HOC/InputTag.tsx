@@ -13,17 +13,6 @@ type Props = {
   style?: CSSProperties;
   randomColor?: Boolean;
 };
-const linkColor: string[] = [
-  "#FFD300",
-  "#DE38C8",
-  "#652EC7",
-  "#33135C",
-  "#FF9472",
-  "#35212A",
-  "#00207A",
-  "#037A90",
-  "#28CF75",
-];
 
 const InputTag = ({
   label,
@@ -31,7 +20,6 @@ const InputTag = ({
   type,
   require = true,
   warning,
-  randomColor,
   prefix = "",
   smallLabel,
   tagList,
@@ -75,15 +63,7 @@ const InputTag = ({
       <div className={classes.inputForTag} style={{ padding: "0px" }}>
         {tags?.map((tag: string, index: number) => {
           return (
-            <span
-              key={index}
-              className={classes.tag}
-              style={
-                randomColor
-                  ? { color: linkColor[Math.ceil(Math.random() * 10)] }
-                  : {}
-              }
-            >
+            <span key={index} className={classes.tag}>
               {tag}
               <i
                 className="ri-close-line"

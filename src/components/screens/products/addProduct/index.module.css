@@ -1,4 +1,6 @@
 .body{
+    /* width: 100%; */
+    max-width: 800px;
     width: 800px;
     padding: 25px;
     background-color: var(--background);
@@ -99,4 +101,10 @@
     display: flex;
     justify-content: flex-end;
     gap: 12px;
+}
+
+@media (max-width: 1024px) {
+    .body{
+        width: 100%;
+    }
 }

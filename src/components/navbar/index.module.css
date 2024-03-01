@@ -176,3 +176,16 @@ ul::-webkit-scrollbar{
     color: var(--primary-color);
 }
 
+@media (max-width: 1024px) {
+    .li{
+        font-size: medium;
+        height: 32px;
+    }
+    .brand{
+        font-size: 22px;
+    }
+    .header{
+        padding: 0px 30px;
+    }
+}
+

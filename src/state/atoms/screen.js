@@ -27,6 +27,11 @@ export const recallProductsAPI = atom({
   default: "",
 });
 
+export const productImagesId = atom({
+  key: "product-images-id",
+  default: "",
+});
+
 export const currentUserState = atom({
   key: "current-user",
   default: selector({
