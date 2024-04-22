@@ -9,18 +9,22 @@ import { darkmodeState } from "./../../../../state/atoms/screen";
 
 type Props = {
   data: Object;
+  months: any;
 };
 
-const CategoryWiseSales = ({ data }: Props) => {
+const CategoryWiseSales = ({ data, months }: Props) => {
   const [month, setMonth] = useState("Jan");
   const [category, setCategory] = useState({});
   const darkmode = useRecoilValue(darkmodeState);
 
   useEffect(() => {
-    setCategory(
-      Object.entries(data).filter((item) => item[0] === month)[0][1]?.category
-    );
-  }, [month]);
+    if (data !== undefined) {
+      setCategory(
+        Object.entries(data)?.filter((item) => item[0] === month)[0][1]
+          ?.category
+      );
+    }
+  }, [month, data]);
 
   const renderBody = useMemo(() => {
     return (
@@ -31,7 +35,7 @@ const CategoryWiseSales = ({ data }: Props) => {
           </div>
           <div>
             <SelectBox
-              options={Object.keys(data)}
+              options={months}
               id="dates"
               name="dates"
               require={false}
@@ -51,7 +55,7 @@ const CategoryWiseSales = ({ data }: Props) => {
                 //@ts-ignore
                 mode: darkmode ? "dark" : "light",
               },
-              labels: Object.keys(category),
+              labels: Object.keys(category) || [],
               responsive: [
                 {
                   breakpoint: 480,
@@ -67,7 +71,7 @@ const CategoryWiseSales = ({ data }: Props) => {
               ],
             }}
             //@ts-ignore
-            series={Object.values(category)}
+            series={Object.values(category) || []}
             type="pie"
             height={240}
           />

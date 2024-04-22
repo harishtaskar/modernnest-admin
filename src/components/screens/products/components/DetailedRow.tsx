@@ -26,8 +26,6 @@ const DetailedRow = ({ visible, data }: Props) => {
     window.open(url, "_blank");
   }, []);
 
-  console.log(data);
-
   useEffect(() => {
     const getImage = async (path: string) => {
       const url: any = await getImageViaUrl(path);

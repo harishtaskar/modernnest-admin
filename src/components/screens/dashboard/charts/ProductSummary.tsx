@@ -7,24 +7,28 @@ import { useRecoilValue } from "recoil";
 import { darkmodeState } from "./../../../../state/atoms/screen";
 type Props = {
   data: object;
+  months: any;
 };
 
-const ProductSummary = ({ data }: Props) => {
+const ProductSummary = ({ months, data }: Props) => {
   const [sales, setSales] = useState<number[]>([]);
   const darkmode = useRecoilValue(darkmodeState);
   useEffect(() => {
-    Object.values(data).map((item: any) => {
-      setSales((prev) => {
-        return [
-          ...prev,
-          item.sales.reduce(
-            (acc: number, current: number) => Math.round(acc + current / 1000),
-            0
-          ),
-        ];
+    if (data !== undefined) {
+      Object.values(data)?.map((item: any) => {
+        setSales((prev) => {
+          return [
+            ...prev,
+            item.sales.reduce(
+              (acc: number, current: number) =>
+                Math.round(acc + current / 1000),
+              0
+            ),
+          ];
+        });
       });
-    });
-  }, []);
+    }
+  }, [data]);
 
   const renderBody = useMemo(() => {
     return (
@@ -41,7 +45,7 @@ const ProductSummary = ({ data }: Props) => {
             options={{
               chart: { id: "monthly-sales", background: "var(--white)" },
               xaxis: {
-                categories: Object.keys(data),
+                categories: months,
               },
               theme: {
                 mode: darkmode ? "dark" : "light",
@@ -50,7 +54,7 @@ const ProductSummary = ({ data }: Props) => {
             series={[
               {
                 name: "chart-1",
-                data: sales,
+                data: sales || "",
               },
             ]}
             type="bar"

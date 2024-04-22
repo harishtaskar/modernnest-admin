@@ -176,6 +176,14 @@ ul::-webkit-scrollbar{
     color: var(--primary-color);
 }
 
+.toggle{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
 @media (max-width: 1024px) {
     .li{
         font-size: medium;

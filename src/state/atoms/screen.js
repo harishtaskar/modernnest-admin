@@ -32,6 +32,11 @@ export const productImagesId = atom({
   default: "",
 });
 
+export const dashboardData = atom({
+  key: "dashboard-data",
+  default: undefined,
+});
+
 export const currentUserState = atom({
   key: "current-user",
   default: selector({

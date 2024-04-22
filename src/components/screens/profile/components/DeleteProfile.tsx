@@ -8,6 +8,7 @@ import { activeModal } from "./../../../../state/atoms/screen";
 //@ts-ignore
 import { confirmationState } from "./../../../../state/atoms/screen";
 
+
 type Props = {
   user: RegisterData;
 };
@@ -15,6 +16,7 @@ type Props = {
 const DeleteProfile = ({ user }: Props) => {
   const setActiveModal = useSetRecoilState(activeModal);
   const setConfirmation = useSetRecoilState(confirmationState);
+  
 
   const deleteHandler = useCallback(() => {
     setConfirmation({

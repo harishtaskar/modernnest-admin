@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import classes from "../index.module.css";
 
 type Props = {
@@ -5,6 +6,13 @@ type Props = {
 };
 
 const ProductActions = ({ disclosed = false }: Props) => {
+  const onEditHandler = useCallback(
+    (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+      event.stopPropagation();
+    },
+    []
+  );
+
   return (
     <div className={classes["product-actions"]}>
       {disclosed ? (
@@ -13,7 +21,10 @@ const ProductActions = ({ disclosed = false }: Props) => {
         <i className={`${classes["product-action"]} ri-eye-off-line`} />
       )}
 
-      <i className={`${classes["product-action"]} ri-edit-box-line`} />
+      <i
+        className={`${classes["product-action"]} ri-edit-box-line`}
+        onClick={onEditHandler}
+      />
     </div>
   );
 };

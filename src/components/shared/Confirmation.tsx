@@ -52,7 +52,7 @@ Props) => {
       if ((await response.res) === "ok") {
         toast.success(response.msg);
         onClose(event);
-        setRecallAPI(confirmation.id);
+        setRecallAPI(Math.random() * 9);
       } else {
         toast.error(response.msg);
       }

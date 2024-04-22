@@ -62,6 +62,7 @@
     flex-wrap: wrap;
     overflow-y: scroll;
     gap: 15px;
+    padding-right: 5px;
 }
 
 .details::-webkit-scrollbar,

@@ -31,7 +31,7 @@ const EditProfile = ({ onClose }: Props) => {
       });
       if (response.res === "ok") {
         setCurrentUser(response.update);
-        toast.success(" 🔥 Profile Updated Successfully");
+        toast.success("Profile Updated Successfully");
         onClose(event);
       } else {
         toast.success(response.msg);
@@ -92,7 +92,6 @@ const EditProfile = ({ onClose }: Props) => {
     },
     [update, currentUser]
   );
-
 
   const renderProfileFields = useMemo(() => {
     if (user) {
@@ -203,7 +202,7 @@ const EditProfile = ({ onClose }: Props) => {
       onClose={onClose}
       closeBtn={false}
       modalstyle={{
-        borderRadius: "4px",
+        borderRadius: "0px",
         backgroundColor: "var(--background)",
         margin: "20px",
       }}

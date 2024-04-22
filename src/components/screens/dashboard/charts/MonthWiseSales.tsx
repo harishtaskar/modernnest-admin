@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Chart from "react-apexcharts";
 import classes from "./index.module.css";
 import SelectBox from "../../../HOC/SelectBox";
@@ -9,17 +9,19 @@ import { darkmodeState } from "./../../../../state/atoms/screen";
 
 type Props = {
   data: Object;
+  months: any;
 };
 
-const MonthWiseSales = ({ data }: Props) => {
+const MonthWiseSales = ({ data, months }: Props) => {
   const [month, setMonth] = useState<any>("Jan");
   const [sales, setSales] = useState<any>([]);
   const darkmode = useRecoilValue(darkmodeState);
 
   useEffect(() => {
-    setSales(Object.entries(data).filter((item) => item[0] === month)[0]);
-  }, [month]);
-
+    if (data !== undefined) {
+      setSales(Object.entries(data)?.filter((item) => item[0] === month)[0]);
+    }
+  }, [month, data]);
 
   const renderBody = useMemo(() => {
     return (
@@ -32,7 +34,7 @@ const MonthWiseSales = ({ data }: Props) => {
           </div>
           <div>
             <SelectBox
-              options={Object.keys(data)}
+              options={months}
               id="dates"
               name="dates"
               require={false}
@@ -65,7 +67,7 @@ const MonthWiseSales = ({ data }: Props) => {
             series={[
               {
                 name: "chart-1",
-                data: sales[1]?.sales,
+                data: sales[1]?.sales || "",
               },
             ]}
             type="line"

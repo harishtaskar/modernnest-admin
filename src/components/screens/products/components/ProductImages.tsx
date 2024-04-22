@@ -52,8 +52,6 @@ const ProductImages = ({ onClose }: Props) => {
   }, []);
 
   const renderBody = useMemo(() => {
-    console.log(images);
-
     return (
       <div className={classes["images-container"]}>
         <div className={classes["images-body"]}>
@@ -108,7 +106,11 @@ const ProductImages = ({ onClose }: Props) => {
       body={renderBody}
       onClose={onClose}
       closeBtn={true}
-      modalstyle={{ margin: "40px", width: "100%" }}
+      modalstyle={{
+        margin: "40px",
+        width: "100%",
+        backgroundColor: "var(--background)",
+      }}
     />
   );
 };
